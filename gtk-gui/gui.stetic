@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <images-root-path>..</images-root-path>
+  </configuration>
+  <import>
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../bin/Release/Bounce.exe" internal="true" />
+  </import>
+  <icon-factory>
+    <icon-set id="sprite">
+      <source>
+        <property name="Image">stock:gtk-no Menu</property>
+      </source>
+    </icon-set>
+  </icon-factory>
+  <widget class="Gtk.Window" id="MainWindow" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Bounce</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <signal name="KeyPressEvent" handler="OnKeyPressEvent" />
+    <signal name="KeyReleaseEvent" handler="OnKeyReleaseEvent" />
+    <child>
+      <widget class="Gtk.DrawingArea" id="canvas">
+        <property name="MemberName" />
+        <signal name="ExposeEvent" handler="OnCanvasExposeEvent" />
+      </widget>
+    </child>
+  </widget>
+</stetic-interface>
