@@ -12,6 +12,8 @@ namespace Bounce
 		private Field[,] fields;
 		const int fieldSize = 20;
 		Cairo.Surface background;
+		Gtk.DrawingArea area;
+		int width, height;
 
 		public Board (int width, int height, Gtk.DrawingArea area)
 		{
@@ -25,13 +27,16 @@ namespace Bounce
 					}
 				}
 			}
+			this.area = area;
+			this.width = width;
+			this.height = height;
 			area.SetSizeRequest (width * fieldSize, height * fieldSize);
 			refreshBackground ();
 		}
 
 		protected void refreshBackground ()
 		{
-			background = new Cairo.ImageSurface (Cairo.Format.ARGB32, fields.GetLength (0) * fieldSize, fields.GetLength (1) * fieldSize);
+			background = new Cairo.ImageSurface (Cairo.Format.ARGB32, width * fieldSize, height * fieldSize);
 			using (Cairo.Context context = new Cairo.Context(background)) {
 				paintBackground (context);
 			}
@@ -85,13 +90,13 @@ namespace Bounce
 			int max = 0;
 			switch (player.direction) {
 			case Player.Direction.Down:
-				max = (fields.GetLength (1)) * fieldSize - (player.Y + fieldSize);
+				max = height * fieldSize - (player.Y + fieldSize);
 				break;
 			case Player.Direction.Up:
 				max = player.Y;
 				break;
 			case Player.Direction.Right:
-				max = (fields.GetLength (0)) * fieldSize - (player.X + fieldSize);
+				max = width * fieldSize - (player.X + fieldSize);
 				break;
 			case Player.Direction.Left:
 				max = player.X;
@@ -127,8 +132,9 @@ namespace Bounce
 			player.Stop (checkedPlayerDistance(steps));
 		}
 
-		public void Render (Gdk.Window canvas)
+		public void Render ()
 		{
+			Gdk.Window canvas = area.GdkWindow;
 			using (Cairo.Context context = Gdk.CairoHelper.Create (canvas)) {
 				canvas.BeginPaintRegion (new Gdk.Region());
 				context.SetSourceSurface (background, 0, 0);
@@ -150,8 +156,8 @@ namespace Bounce
 		{
 			context.SetSourceRGB (0.8, 0.8, 0.8);
 			context.Paint ();
-			for (int i = 0; i < fields.GetLength(0); i++) {
-				for (int j = 0; j < fields.GetLength(1); j++) {
+			for (int i = 0; i < width; i++) {
+				for (int j = 0; j < height; j++) {
 					paintSquare (context, i * fieldSize, j * fieldSize, fields [i, j].Full);
 				}
 			}
@@ -163,15 +169,15 @@ namespace Bounce
 		{
 			context.LineWidth = 0.3;
 			context.SetSourceRGBA (0, 0, 0, 0.2);
-			for (int i = 0; i < fields.GetLength(0); i++) {
+			for (int i = 0; i < width; i++) {
 				context.MoveTo (new Cairo.PointD (i * fieldSize, 0));
 				context.LineTo (new Cairo.PointD (i * fieldSize, fields.GetLength (1) * fieldSize));
 				context.Stroke ();
 				context.NewPath ();
 			}
-			for (int i = 0; i < fields.GetLength(1); i++) {
+			for (int i = 0; i < height; i++) {
 				context.MoveTo (new Cairo.PointD (0, i * fieldSize));
-				context.LineTo (new Cairo.PointD (fields.GetLength (0) * fieldSize, i * fieldSize));
+				context.LineTo (new Cairo.PointD (width * fieldSize, i * fieldSize));
 				context.Stroke ();
 				context.NewPath ();
 			}

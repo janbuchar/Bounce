@@ -21,11 +21,11 @@ public partial class MainWindow: Gtk.Window
 		board.AddBall (new Ball (120, 80, -1, 1));
 		GLib.Timeout.Add (40, delegate {
 			board.MoveBalls ();
-			board.Render (canvas.GdkWindow);
+			board.Render ();
 			return true;
 		});
 	}
-	
+
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
 		Application.Quit ();
@@ -34,7 +34,7 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnCanvasExposeEvent (object o, ExposeEventArgs args)
 	{
-		board.Render (canvas.GdkWindow);
+		board.Render ();
 	}
 
 	protected void OnKeyPressEvent (object o, KeyPressEventArgs args)
