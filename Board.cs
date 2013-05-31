@@ -73,11 +73,31 @@ namespace Bounce
 				}
 			}
 			if (player.Moving) {
-				player.Move (5);
+				player.Move (checkedPlayerDistance(5));
 			}
 			if (player.Remaining > 0) {
 				player.Move (Math.Min (5, player.Remaining));
 			}
+		}
+
+		public int checkedPlayerDistance (int steps)
+		{
+			int max = 0;
+			switch (player.direction) {
+			case Player.Direction.Down:
+				max = (fields.GetLength (1)) * fieldSize - (player.Y + fieldSize);
+				break;
+			case Player.Direction.Up:
+				max = player.Y;
+				break;
+			case Player.Direction.Right:
+				max = (fields.GetLength (0)) * fieldSize - (player.X + fieldSize);
+				break;
+			case Player.Direction.Left:
+				max = player.X;
+				break;
+			}
+			return Math.Min (steps, max);
 		}
 
 		public void MovePlayer (Player.Direction direction)
@@ -104,7 +124,7 @@ namespace Bounce
 				steps = player.X % fieldSize;
 				break;
 			}
-			player.Stop (steps);
+			player.Stop (checkedPlayerDistance(steps));
 		}
 
 		public void Render (Gdk.Window canvas)
