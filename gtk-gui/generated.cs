@@ -5,19 +5,19 @@ namespace Stetic
 	internal class Gui
 	{
 		private static bool initialized;
-		
+
 		internal static void Initialize (Gtk.Widget iconRenderer)
 		{
 			if ((Stetic.Gui.initialized == false)) {
 				Stetic.Gui.initialized = true;
 				global::Gtk.IconFactory w1 = new global::Gtk.IconFactory ();
-				global::Gtk.IconSet w2 = new global::Gtk.IconSet (global::Stetic.IconLoader.LoadIcon (iconRenderer, "gtk-no", global::Gtk.IconSize.Menu));
+				global::Gtk.IconSet w2 = new global::Gtk.IconSet (global::Stetic.IconLoader.LoadIcon(iconRenderer, "gtk-no", global::Gtk.IconSize.Menu));
 				w1.Add ("sprite", w2);
 				w1.AddDefault ();
 			}
 		}
 	}
-	
+
 	internal class IconLoader
 	{
 		public static Gdk.Pixbuf LoadIcon (Gtk.Widget widget, string name, Gtk.IconSize size)
@@ -51,14 +51,14 @@ namespace Stetic
 			}
 		}
 	}
-	
+
 	internal class ActionGroups
 	{
 		public static Gtk.ActionGroup GetActionGroup (System.Type type)
 		{
 			return Stetic.ActionGroups.GetActionGroup (type.FullName);
 		}
-		
+
 		public static Gtk.ActionGroup GetActionGroup (string name)
 		{
 			return null;

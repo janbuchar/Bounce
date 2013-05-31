@@ -8,14 +8,10 @@ namespace Bounce
 	public class Board
 	{
 		protected Player player = new Player (0, 0);
-
-		bool playerMoving;
-
 		protected List<Ball> balls = new List<Ball> ();
-
 		private Field[,] fields;
-
 		const int fieldSize = 20;
+		Cairo.Surface background;
 
 		public Board (int width, int height, Gtk.DrawingArea area)
 		{
@@ -30,6 +26,15 @@ namespace Bounce
 				}
 			}
 			area.SetSizeRequest (width * fieldSize, height * fieldSize);
+			refreshBackground ();
+		}
+
+		protected void refreshBackground ()
+		{
+			background = new Cairo.ImageSurface (Cairo.Format.ARGB32, fields.GetLength (0) * fieldSize, fields.GetLength (1) * fieldSize);
+			using (Cairo.Context context = new Cairo.Context(background)) {
+				paintBackground (context);
+			}
 		}
 
 		public void AddBall (Ball ball)
@@ -40,6 +45,7 @@ namespace Bounce
 		public void Fill (int x, int y)
 		{
 			fields [x, y].Full = true;
+			refreshBackground ();
 		}
 
 		public void MoveBalls ()
@@ -103,22 +109,21 @@ namespace Bounce
 
 		public void Render (Gdk.Window canvas)
 		{
-			Cairo.Context context = Gdk.CairoHelper.Create (canvas);
-			paintBackground (context);
+			using (Cairo.Context context = Gdk.CairoHelper.Create (canvas)) {
+				canvas.BeginPaintRegion (new Gdk.Region());
+				context.SetSourceSurface (background, 0, 0);
+				context.Paint ();
 
-			foreach (Ball ball in balls) {
-				context = Gdk.CairoHelper.Create (canvas);
-				context.SetSourceRGB (1, 0, 0);		
-				paintCircle (context, ball.X, ball.Y);
+				foreach (Ball ball in balls) {
+					context.SetSourceRGB (1, 0, 0);		
+					paintCircle (context, ball.X, ball.Y);
+				}
+
+				context.SetSourceRGB (0, 0, 1);
+				paintCircle (context, player.X, player.Y);
+
+				canvas.EndPaint ();
 			}
-
-			context = Gdk.CairoHelper.Create (canvas);
-			context.SetSourceRGB (0, 0, 1);
-			paintCircle (context, player.X, player.Y);
-
-			canvas.EndPaint ();
-			((IDisposable)context.Target).Dispose ();
-			((IDisposable)context).Dispose ();
 		}
 
 		protected void paintBackground (Cairo.Context context)
@@ -131,6 +136,7 @@ namespace Bounce
 				}
 			}
 			paintGrid (context);
+			context.Paint ();
 		}
 
 		protected void paintGrid (Cairo.Context context)
@@ -167,6 +173,7 @@ namespace Bounce
 		{
 			context.Arc (x + fieldSize / 2, y + fieldSize / 2, fieldSize / 2, 0, 2 * Math.PI);
 			context.FillPreserve ();
+			context.NewPath ();
 		}
 	}
 }
