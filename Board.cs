@@ -98,10 +98,10 @@ namespace Bounce
 				steps = fieldSize - player.Y % fieldSize;
 				break;
 			case Player.Direction.Right:
-				steps = player.X % fieldSize;
+				steps = fieldSize - player.X % fieldSize;
 				break;
 			case Player.Direction.Left:
-				steps = fieldSize - player.X % fieldSize;
+				steps = player.X % fieldSize;
 				break;
 			}
 			player.Stop (steps);
