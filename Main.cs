@@ -8,7 +8,7 @@ namespace Bounce
 		public static void Main (string[] args)
 		{
 			Application.Init ();
-			MainWindow win = new MainWindow ();
+			LauncherWindow win = new LauncherWindow ();
 			win.Show ();
 			Application.Run ();
 		}

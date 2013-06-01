@@ -13,7 +13,10 @@ namespace Bounce
 		const int fieldSize = 20;
 		Cairo.Surface background;
 		Gtk.DrawingArea area;
-		int width, height;
+
+		public int Width { get; protected set; }
+
+		public int Height { get; protected set; }
 
 		public Board (int width, int height, Gtk.DrawingArea area)
 		{
@@ -28,23 +31,23 @@ namespace Bounce
 				}
 			}
 			this.area = area;
-			this.width = width;
-			this.height = height;
+			this.Width = width;
+			this.Height = height;
 			area.SetSizeRequest (width * fieldSize, height * fieldSize);
 			refreshBackground ();
 		}
 
 		protected void refreshBackground ()
 		{
-			background = new Cairo.ImageSurface (Cairo.Format.ARGB32, width * fieldSize, height * fieldSize);
+			background = new Cairo.ImageSurface (Cairo.Format.ARGB32, Width * fieldSize, Height * fieldSize);
 			using (Cairo.Context context = new Cairo.Context(background)) {
 				paintBackground (context);
 			}
 		}
 
-		public void AddBall (Ball ball)
+		public void AddBall (int x, int y, int dX, int dY)
 		{
-			balls.Add (ball);
+			balls.Add (new Ball(x * fieldSize, y * fieldSize, dX, dY));
 		}
 
 		public void Fill (int x, int y)
@@ -90,13 +93,13 @@ namespace Bounce
 			int max = 0;
 			switch (player.direction) {
 			case Player.Direction.Down:
-				max = height * fieldSize - (player.Y + fieldSize);
+				max = Height * fieldSize - (player.Y + fieldSize);
 				break;
 			case Player.Direction.Up:
 				max = player.Y;
 				break;
 			case Player.Direction.Right:
-				max = width * fieldSize - (player.X + fieldSize);
+				max = Width * fieldSize - (player.X + fieldSize);
 				break;
 			case Player.Direction.Left:
 				max = player.X;
@@ -156,8 +159,8 @@ namespace Bounce
 		{
 			context.SetSourceRGB (0.8, 0.8, 0.8);
 			context.Paint ();
-			for (int i = 0; i < width; i++) {
-				for (int j = 0; j < height; j++) {
+			for (int i = 0; i < Width; i++) {
+				for (int j = 0; j < Height; j++) {
 					paintSquare (context, i * fieldSize, j * fieldSize, fields [i, j].Full);
 				}
 			}
@@ -169,15 +172,15 @@ namespace Bounce
 		{
 			context.LineWidth = 0.3;
 			context.SetSourceRGBA (0, 0, 0, 0.2);
-			for (int i = 0; i < width; i++) {
+			for (int i = 0; i < Width; i++) {
 				context.MoveTo (new Cairo.PointD (i * fieldSize, 0));
 				context.LineTo (new Cairo.PointD (i * fieldSize, fields.GetLength (1) * fieldSize));
 				context.Stroke ();
 				context.NewPath ();
 			}
-			for (int i = 0; i < height; i++) {
+			for (int i = 0; i < Height; i++) {
 				context.MoveTo (new Cairo.PointD (0, i * fieldSize));
-				context.LineTo (new Cairo.PointD (width * fieldSize, i * fieldSize));
+				context.LineTo (new Cairo.PointD (Width * fieldSize, i * fieldSize));
 				context.Stroke ();
 				context.NewPath ();
 			}

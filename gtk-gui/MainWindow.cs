@@ -21,9 +21,9 @@ public partial class MainWindow
 		this.DefaultWidth = 400;
 		this.DefaultHeight = 300;
 		this.Show ();
-		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.KeyPressEvent += new global::Gtk.KeyPressEventHandler (this.OnKeyPressEvent);
 		this.KeyReleaseEvent += new global::Gtk.KeyReleaseEventHandler (this.OnKeyReleaseEvent);
+		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.canvas.ExposeEvent += new global::Gtk.ExposeEventHandler (this.OnCanvasExposeEvent);
 	}
 }

@@ -10,20 +10,12 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
-		board = new Board (30, 20, this.canvas);
-		board.Fill (10, 5);
-		board.Fill (11, 6);
-		board.Fill (12, 7);
-		board.Fill (5, 7);
-		board.Fill (3, 8);
-		board.Fill (17, 3);
-		board.AddBall (new Ball (60, 60, 1, 1));
-		board.AddBall (new Ball (120, 80, -1, 1));
-		GLib.Timeout.Add (40, delegate {
-			board.MoveBalls ();
-			board.Render ();
-			return true;
-		});
+	}
+
+	public Board CreateBoard (int width, int height)
+	{
+		board = new Board (width, height, this.canvas);
+		return board;
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
