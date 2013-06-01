@@ -2,14 +2,18 @@ using System;
 
 namespace Bounce
 {
-
 	public class Player
 	{
 		public enum Direction
 		{
-			Up,
-			Down,
-			Right,
+			None
+,
+			Up
+,
+			Down
+,
+			Right
+,
 			Left
 		}
 
@@ -17,6 +21,8 @@ namespace Bounce
 			get;
 			protected set;
 		}
+
+		public Direction SteeringDirection;
 
 		public int Remaining {
 			get;
@@ -48,6 +54,7 @@ namespace Bounce
 		public void StartMove (Direction direction)
 		{
 			this.direction = direction;
+			SteeringDirection = Direction.None;
 			Moving = true;
 		}
 

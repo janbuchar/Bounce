@@ -81,6 +81,9 @@ namespace Bounce
 			}
 			if (player.Remaining > 0) {
 				player.Move (Math.Min (5, player.Remaining));
+				if (player.Remaining == 0 && player.SteeringDirection != Player.Direction.None) {
+					player.StartMove (player.SteeringDirection);
+				}
 			}
 		}
 
@@ -108,6 +111,11 @@ namespace Bounce
 		{
 			if (!player.Moving && player.Remaining == 0) {
 				player.StartMove (direction);
+			} else {
+				if (player.Moving) {
+					StopPlayer ();
+				}
+				player.SteeringDirection = direction;
 			}
 		}
 
