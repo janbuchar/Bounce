@@ -10,15 +10,14 @@ namespace Bounce
 		protected Player player = new Player (0, 0);
 		protected List<Ball> balls = new List<Ball> ();
 		private Field[,] fields;
-		const int fieldSize = 20;
-		Cairo.Surface background;
-		Gtk.DrawingArea area;
+		int fieldSize;
+		BoardRenderer renderer;
 
 		public int Width { get; protected set; }
 
 		public int Height { get; protected set; }
 
-		public Board (int width, int height, Gtk.DrawingArea area)
+		public Board (int width, int height, int fieldSize, BoardRenderer renderer)
 		{
 			fields = new Field[width, height];
 			for (int i = 0; i < width; i++) {
@@ -30,19 +29,16 @@ namespace Bounce
 					}
 				}
 			}
-			this.area = area;
+			this.renderer = renderer;
 			this.Width = width;
 			this.Height = height;
-			area.SetSizeRequest (width * fieldSize, height * fieldSize);
-			refreshBackground ();
+			this.fieldSize = fieldSize;
+			renderer.RefreshBackground (fields);
 		}
 
-		protected void refreshBackground ()
+		public void Render ()
 		{
-			background = new Cairo.ImageSurface (Cairo.Format.ARGB32, Width * fieldSize, Height * fieldSize);
-			using (Cairo.Context context = new Cairo.Context(background)) {
-				paintBackground (context);
-			}
+			renderer.Render (player, balls);
 		}
 
 		public void AddBall (int x, int y, int dX, int dY)
@@ -53,7 +49,7 @@ namespace Bounce
 		public void Fill (int x, int y)
 		{
 			fields [x, y].Full = true;
-			refreshBackground ();
+			renderer.RefreshBackground (fields);
 		}
 
 		public void MoveBalls ()
@@ -133,76 +129,6 @@ namespace Bounce
 				break;
 			}
 			player.Stop (checkedPlayerDistance(steps));
-		}
-
-		public void Render ()
-		{
-			Gdk.Window canvas = area.GdkWindow;
-			using (Cairo.Context context = Gdk.CairoHelper.Create (canvas)) {
-				canvas.BeginPaintRegion (new Gdk.Region());
-				context.SetSourceSurface (background, 0, 0);
-				context.Paint ();
-
-				foreach (Ball ball in balls) {
-					context.SetSourceRGB (1, 0, 0);		
-					paintCircle (context, ball.X, ball.Y);
-				}
-
-				context.SetSourceRGB (0, 0, 1);
-				paintCircle (context, player.X, player.Y);
-
-				canvas.EndPaint ();
-			}
-		}
-
-		protected void paintBackground (Cairo.Context context)
-		{
-			context.SetSourceRGB (0.8, 0.8, 0.8);
-			context.Paint ();
-			for (int i = 0; i < Width; i++) {
-				for (int j = 0; j < Height; j++) {
-					paintSquare (context, i * fieldSize, j * fieldSize, fields [i, j].Full);
-				}
-			}
-			paintGrid (context);
-			context.Paint ();
-		}
-
-		protected void paintGrid (Cairo.Context context)
-		{
-			context.LineWidth = 0.3;
-			context.SetSourceRGBA (0, 0, 0, 0.2);
-			for (int i = 0; i < Width; i++) {
-				context.MoveTo (new Cairo.PointD (i * fieldSize, 0));
-				context.LineTo (new Cairo.PointD (i * fieldSize, fields.GetLength (1) * fieldSize));
-				context.Stroke ();
-				context.NewPath ();
-			}
-			for (int i = 0; i < Height; i++) {
-				context.MoveTo (new Cairo.PointD (0, i * fieldSize));
-				context.LineTo (new Cairo.PointD (Width * fieldSize, i * fieldSize));
-				context.Stroke ();
-				context.NewPath ();
-			}
-		}
-
-		protected void paintSquare (Cairo.Context context, int x, int y, bool fill)
-		{
-			context.Save ();
-			context.SetSourceRGB (0, 0, 1);
-			context.Translate (x, y);
-			context.Rectangle (new Cairo.Rectangle (new Cairo.Point (0, 0), fieldSize, fieldSize));
-			context.SetSourceRGBA (0, 0, 0, fill ? 0.5 : 0.3);
-			context.FillPreserve ();
-			context.NewPath ();
-			context.Restore ();
-		}
-
-		protected void paintCircle (Cairo.Context context, int x, int y)
-		{
-			context.Arc (x + fieldSize / 2, y + fieldSize / 2, fieldSize / 2, 0, 2 * Math.PI);
-			context.FillPreserve ();
-			context.NewPath ();
 		}
 	}
 }

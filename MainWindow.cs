@@ -12,9 +12,11 @@ public partial class MainWindow: Gtk.Window
 		Build ();
 	}
 
-	public Board CreateBoard (int width, int height)
+	public Board createBoard (int width, int height)
 	{
-		board = new Board (width, height, this.canvas);
+		int fieldSize = 20;
+		BoardRenderer renderer = new BoardRenderer (this.canvas, width, height, fieldSize);
+		board = new Board (width, height, fieldSize, renderer);
 		return board;
 	}
 

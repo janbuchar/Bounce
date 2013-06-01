@@ -71,6 +71,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="LauncherWindow.cs" />
     <Compile Include="gtk-gui\Bounce.LauncherWindow.cs" />
+    <Compile Include="BoardRenderer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
