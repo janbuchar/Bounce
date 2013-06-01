@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Bounce
 {
@@ -43,6 +44,8 @@ namespace Bounce
 			get;
 			protected set;
 		}
+
+		public Queue<Field> Trail = new Queue<Field> ();
 
 		public Player (int X, int Y)
 		{

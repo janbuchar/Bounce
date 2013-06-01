@@ -22,11 +22,14 @@ namespace Bounce
 			fields = new Field[width, height];
 			for (int i = 0; i < width; i++) {
 				for (int j = 0; j < height; j++) {
+					fields [i, j] = new Field ();
 					if (i == 0 || j == 0 || i + 1 == width || j + 1 == height) {
 						fields [i, j].Full = true;
 					} else {
 						fields [i, j].Full = false;
 					}
+					fields [i, j].X = i;
+					fields [i, j].Y = j;
 				}
 			}
 			this.renderer = renderer;
@@ -49,6 +52,14 @@ namespace Bounce
 		public void Fill (int x, int y)
 		{
 			fields [x, y].Full = true;
+			renderer.RefreshBackground (fields);
+		}
+
+		public void closeTrail ()
+		{
+			while (player.Trail.Count > 0) {
+				player.Trail.Dequeue ().Full = true;
+			}
 			renderer.RefreshBackground (fields);
 		}
 
@@ -85,6 +96,17 @@ namespace Bounce
 					player.StartMove (player.SteeringDirection);
 				}
 			}
+			Field playerField = crossedField (player.X, player.Y);
+			if (!playerField.Full && !player.Trail.Contains (playerField)) {
+				player.Trail.Enqueue (playerField);
+			} else if (playerField.Full && player.Trail.Count > 0) {
+				closeTrail ();
+			}
+		}
+
+		protected Field crossedField (int x, int y)
+		{
+			return fields [x / fieldSize, y / fieldSize];
 		}
 
 		public int checkedPlayerDistance (int steps)

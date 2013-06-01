@@ -2,9 +2,10 @@ using System;
 
 namespace Bounce
 {
-	public struct Field
+	public class Field
 	{
 		public bool Full;
+		public int X, Y;
 	}
 }
 

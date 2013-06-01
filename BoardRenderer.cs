@@ -27,6 +27,10 @@ namespace Bounce
 				context.SetSourceSurface (background, 0, 0);
 				context.Paint ();
 
+				foreach (Field field in player.Trail) {
+					paintTrail (context, field.X * fieldSize, field.Y * fieldSize);
+				}
+
 				foreach (Ball ball in balls) {
 					context.SetSourceRGB (1, 0, 0);		
 					paintCircle (context, ball.X, ball.Y);
@@ -85,6 +89,18 @@ namespace Bounce
 			context.Translate (x, y);
 			context.Rectangle (new Cairo.Rectangle (new Cairo.Point (0, 0), fieldSize, fieldSize));
 			context.SetSourceRGBA (0, 0, 0, fill ? 0.5 : 0.3);
+			context.FillPreserve ();
+			context.NewPath ();
+			context.Restore ();
+		}
+
+		protected void paintTrail (Cairo.Context context, int x, int y)
+		{
+			context.Save ();
+			context.SetSourceRGB (0, 1, 0);
+			context.Translate (x, y);
+			context.Rectangle (new Cairo.Rectangle (new Cairo.Point (0, 0), fieldSize, fieldSize));
+			context.SetSourceRGBA (0, 1, 0, 0.3);
 			context.FillPreserve ();
 			context.NewPath ();
 			context.Restore ();
