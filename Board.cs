@@ -5,6 +5,17 @@ using Mono;
 
 namespace Bounce
 {
+	public class AreaFilledEventArgs : EventArgs
+	{
+		public int FilledArea;
+
+		public AreaFilledEventArgs (int filled)
+		{
+			FilledArea = filled;
+		}
+	}
+	public delegate void AreaFilledHandler (object sender, AreaFilledEventArgs e);
+	public delegate void PlayerCollisionHandler (object sender, EventArgs e);
 	public class Board
 	{
 		protected Player player = new Player (0, 0);
@@ -16,6 +27,9 @@ namespace Bounce
 		public int Width { get; protected set; }
 
 		public int Height { get; protected set; }
+
+		public event AreaFilledHandler AreaFilled;
+		public event PlayerCollisionHandler PlayerCollision;
 
 		public Board (int width, int height, int fieldSize, BoardRenderer renderer)
 		{
@@ -57,12 +71,14 @@ namespace Bounce
 
 		protected void closeTrail ()
 		{
+			int filled = 0;
 			List<Field> ballMap = new List<Field> ();
 			foreach (Ball ball in balls) {
 				ballMap.Add (crossedField(ball.X, ball.Y));
 			}
 			while (player.Trail.Count > 0) {
 				player.Trail.Dequeue ().Full = true;
+				filled += 1;
 			}
 			bool[,] visited = new bool[Width, Height]; 
 
@@ -71,8 +87,12 @@ namespace Bounce
 				reserve = calculateReserve (ballMap, visited);
 				foreach (Field field in reserve) {
 					field.Full = true;
+					filled += 1;
 				}
 			} while (!isFull(visited));
+			if (AreaFilled != null) {
+				AreaFilled (this, new AreaFilledEventArgs (filled));
+			}
 			renderer.RefreshBackground (fields);
 		}
 

@@ -12,12 +12,26 @@ public partial class MainWindow: Gtk.Window
 		Build ();
 	}
 
-	public Board createBoard (int width, int height)
+	protected Board createBoard (int width, int height)
 	{
 		int fieldSize = 20;
 		BoardRenderer renderer = new BoardRenderer (this.canvas, width, height, fieldSize);
 		board = new Board (width, height, fieldSize, renderer);
 		return board;
+	}
+
+	public void StartGame (Config config)
+	{
+		Game game = new Game (this.createBoard(config.Width, config.Height));
+		game.GameWon += delegate(object sender, EventArgs e) {
+			MessageDialog dialog = new MessageDialog (this, DialogFlags.Modal, MessageType.Info, ButtonsType.Close, "Jedeš vole!");
+			dialog.Show ();
+		};
+		game.GameLost += delegate(object sender, EventArgs e) {
+			MessageDialog dialog = new MessageDialog (this, DialogFlags.Modal, MessageType.Info, ButtonsType.Close, "No tak tos posral...");
+			dialog.Show ();
+		};
+		game.Start (config);
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
