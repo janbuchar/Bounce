@@ -55,12 +55,94 @@ namespace Bounce
 			renderer.RefreshBackground (fields);
 		}
 
-		public void closeTrail ()
+		protected void closeTrail ()
 		{
+			List<Field> ballMap = new List<Field> ();
+			foreach (Ball ball in balls) {
+				ballMap.Add (crossedField(ball.X, ball.Y));
+			}
 			while (player.Trail.Count > 0) {
 				player.Trail.Dequeue ().Full = true;
 			}
+			bool[,] visited = new bool[Width, Height]; 
+
+			List<Field> reserve = new List<Field> ();
+			do {
+				reserve = calculateReserve (ballMap, visited);
+				foreach (Field field in reserve) {
+					field.Full = true;
+				}
+			} while (!isFull(visited));
 			renderer.RefreshBackground (fields);
+		}
+
+		private bool isFull (bool[,] value)
+		{
+			for (int i = 0; i < value.GetLength(0); i++) {
+				for (int j = 0; j < value.GetLength(1); j++) {
+					if (!value [i, j] && !fields [i, j].Full) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		protected List<Field> calculateReserve (List<Field> ballMap, bool[,] visited)
+		{
+			Field start = null;
+			bool containsBall = false;
+			List<Field> result = new List<Field> ();
+			for (int i = 0; i < Width; i++) {
+				for (int j = 0; j < Height; j++) {
+					if (!fields [i, j].Full && !visited [i, j]) {
+						start = fields [i, j];
+						visited [i, j] = true;
+						result.Add (start);
+						break;
+					}
+				}
+				if (start != null) {
+					break;
+				}
+			}
+			if (start != null) {
+				Queue<Field> queue = new Queue<Field> ();
+				queue.Enqueue (start);
+				while (queue.Count > 0) {
+					Field field = queue.Dequeue ();
+					if (ballMap.Contains (field)) {
+						containsBall = true;
+					}
+					foreach (Field neighbour in getNeighbours(field)) {
+						if (!neighbour.Full && !visited [neighbour.X, neighbour.Y]) {
+							result.Add (neighbour);
+							queue.Enqueue (neighbour);
+						}
+						visited [neighbour.X, neighbour.Y] = true;
+					}
+				}
+			}
+			if (containsBall) {
+				result.Clear ();
+			}
+			return result;
+		}
+
+		protected IEnumerable<Field> getNeighbours (Field field)
+		{
+			if (field.X > 0) {
+				yield return fields [field.X - 1, field.Y];
+			}
+			if (field.X + 1 < Width) {
+				yield return fields [field.X + 1, field.Y];
+			}
+			if (field.Y > 0) {
+				yield return fields [field.X, field.Y - 1];
+			}
+			if (field.Y + 1 < Height) {
+				yield return fields [field.X, field.Y + 1];
+			}
 		}
 
 		public void MoveBalls ()
@@ -87,6 +169,7 @@ namespace Bounce
 					ball.Y += ball.dY;	
 				}
 			}
+
 			if (player.Moving) {
 				player.Move (checkedPlayerDistance(5));
 			}
