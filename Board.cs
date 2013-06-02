@@ -187,6 +187,13 @@ namespace Bounce
 					}
 					ball.X += ball.dX;
 					ball.Y += ball.dY;	
+					if (player.Trail.Contains (crossedField(ball.X, ball.Y))) {
+						player.Trail.Clear ();
+						player.Place (player.BaseField.X * fieldSize, player.BaseField.Y * fieldSize);
+						if (PlayerCollision != null) {
+							PlayerCollision (this, EventArgs.Empty);
+						}
+					}
 				}
 			}
 
@@ -202,8 +209,11 @@ namespace Bounce
 			Field playerField = crossedField (player.X, player.Y);
 			if (!playerField.Full && !player.Trail.Contains (playerField)) {
 				player.Trail.Enqueue (playerField);
-			} else if (playerField.Full && player.Trail.Count > 0) {
-				closeTrail ();
+			} else if (playerField.Full) {
+				if (player.Trail.Count > 0) {
+					closeTrail ();
+				}
+				player.BaseField = playerField;
 			}
 		}
 

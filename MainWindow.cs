@@ -31,7 +31,23 @@ public partial class MainWindow: Gtk.Window
 			MessageDialog dialog = new MessageDialog (this, DialogFlags.Modal, MessageType.Info, ButtonsType.Close, "No tak tos posral...");
 			dialog.Show ();
 		};
+		game.FilledAreaChanged += delegate(object sender, int Value) {
+			setFillCounter (Value);
+		};
+		game.LivesChanged += delegate(object sender, int Value) {
+			setLifeCounter (Value);
+		};
 		game.Start (config);
+	}
+
+	protected void setLifeCounter (int value)
+	{
+		lifeCounter.Text = String.Format ("Životy: {0}", value);
+	}
+
+	protected void setFillCounter (int value)
+	{
+		fillCounter.Text = String.Format ("Zaplněno: {0}%", value);
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)

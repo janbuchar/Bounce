@@ -46,6 +46,7 @@ namespace Bounce
 		}
 
 		public Queue<Field> Trail = new Queue<Field> ();
+		public Field BaseField;
 
 		public Player (int X, int Y)
 		{
@@ -88,6 +89,12 @@ namespace Bounce
 					break;
 				}
 			}
+		}
+
+		public void Place (int x, int y)
+		{
+			X = x;
+			Y = y;
 		}
 	}
 }

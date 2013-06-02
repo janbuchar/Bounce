@@ -10,6 +10,8 @@ namespace Bounce
 		private global::Gtk.Label ballCountLabel;
 		private global::Gtk.SpinButton height;
 		private global::Gtk.Label heightLabel;
+		private global::Gtk.SpinButton lives;
+		private global::Gtk.Label livesLabel;
 		private global::Gtk.SpinButton width;
 		private global::Gtk.Label widthLabel;
 		private global::Gtk.Button playButton;
@@ -26,7 +28,7 @@ namespace Bounce
 			this.vbox2.Name = "vbox2";
 			this.vbox2.Spacing = 6;
 			// Container child vbox2.Gtk.Box+BoxChild
-			this.table1 = new global::Gtk.Table (((uint)(3)), ((uint)(2)), false);
+			this.table1 = new global::Gtk.Table (((uint)(4)), ((uint)(2)), false);
 			this.table1.Name = "table1";
 			this.table1.RowSpacing = ((uint)(6));
 			this.table1.ColumnSpacing = ((uint)(6));
@@ -85,6 +87,33 @@ namespace Bounce
 			w4.XOptions = ((global::Gtk.AttachOptions)(4));
 			w4.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
+			this.lives = new global::Gtk.SpinButton (0, 100, 1);
+			this.lives.CanFocus = true;
+			this.lives.Name = "lives";
+			this.lives.Adjustment.PageIncrement = 10;
+			this.lives.ClimbRate = 1;
+			this.lives.Numeric = true;
+			this.lives.Value = 5;
+			this.table1.Add (this.lives);
+			global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1 [this.lives]));
+			w5.TopAttach = ((uint)(3));
+			w5.BottomAttach = ((uint)(4));
+			w5.LeftAttach = ((uint)(1));
+			w5.RightAttach = ((uint)(2));
+			w5.XOptions = ((global::Gtk.AttachOptions)(4));
+			w5.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child table1.Gtk.Table+TableChild
+			this.livesLabel = new global::Gtk.Label ();
+			this.livesLabel.Name = "livesLabel";
+			this.livesLabel.Xalign = 1F;
+			this.livesLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Počet životů");
+			this.table1.Add (this.livesLabel);
+			global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1 [this.livesLabel]));
+			w6.TopAttach = ((uint)(3));
+			w6.BottomAttach = ((uint)(4));
+			w6.XOptions = ((global::Gtk.AttachOptions)(4));
+			w6.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child table1.Gtk.Table+TableChild
 			this.width = new global::Gtk.SpinButton (0, 100, 1);
 			this.width.CanFocus = true;
 			this.width.Name = "width";
@@ -93,24 +122,24 @@ namespace Bounce
 			this.width.Numeric = true;
 			this.width.Value = 30;
 			this.table1.Add (this.width);
-			global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1 [this.width]));
-			w5.LeftAttach = ((uint)(1));
-			w5.RightAttach = ((uint)(2));
-			w5.XOptions = ((global::Gtk.AttachOptions)(4));
-			w5.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1 [this.width]));
+			w7.LeftAttach = ((uint)(1));
+			w7.RightAttach = ((uint)(2));
+			w7.XOptions = ((global::Gtk.AttachOptions)(4));
+			w7.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
 			this.widthLabel = new global::Gtk.Label ();
 			this.widthLabel.Name = "widthLabel";
 			this.widthLabel.Xalign = 1F;
 			this.widthLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Šířka hrací plochy");
 			this.table1.Add (this.widthLabel);
-			global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1 [this.widthLabel]));
-			w6.XOptions = ((global::Gtk.AttachOptions)(4));
-			w6.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.table1 [this.widthLabel]));
+			w8.XOptions = ((global::Gtk.AttachOptions)(4));
+			w8.YOptions = ((global::Gtk.AttachOptions)(4));
 			this.vbox2.Add (this.table1);
-			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.table1]));
-			w7.Position = 0;
-			w7.Fill = false;
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.table1]));
+			w9.Position = 0;
+			w9.Fill = false;
 			// Container child vbox2.Gtk.Box+BoxChild
 			this.playButton = new global::Gtk.Button ();
 			this.playButton.CanFocus = true;
@@ -118,10 +147,10 @@ namespace Bounce
 			this.playButton.UseUnderline = true;
 			this.playButton.Label = global::Mono.Unix.Catalog.GetString ("Hrát");
 			this.vbox2.Add (this.playButton);
-			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.playButton]));
-			w8.Position = 1;
-			w8.Expand = false;
-			w8.Fill = false;
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.playButton]));
+			w10.Position = 1;
+			w10.Expand = false;
+			w10.Fill = false;
 			this.Add (this.vbox2);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

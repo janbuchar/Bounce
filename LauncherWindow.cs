@@ -14,7 +14,7 @@ namespace Bounce
 		protected void OnPlayButtonClicked (object sender, EventArgs e)
 		{
 			MainWindow win = new MainWindow ();
-			win.StartGame (new Config(width.ValueAsInt, height.ValueAsInt, ballCount.ValueAsInt));
+			win.StartGame (new Config(width.ValueAsInt, height.ValueAsInt, ballCount.ValueAsInt, lives.ValueAsInt));
 			win.Show ();
 			this.Destroy ();
 		}
