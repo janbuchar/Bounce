@@ -168,7 +168,7 @@ namespace Bounce
 		public void MoveBalls ()
 		{
 			foreach (Ball ball in balls) {
-				for (int i = 0; i < 2; i++) {
+				for (int i = 0; i < 5; i++) {
 					int posX = (ball.X + fieldSize / 2) / fieldSize;
 					int posY = (ball.Y + ball.dY) / fieldSize;
 					if (fields [posX, posY + 1].Full && ball.dY > 0) {
