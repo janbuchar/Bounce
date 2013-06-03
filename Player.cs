@@ -58,8 +58,13 @@ namespace Bounce
 		public void StartMove (Direction direction)
 		{
 			this.direction = direction;
-			SteeringDirection = Direction.None;
 			Moving = true;
+		}
+
+		public void Steer ()
+		{
+			StartMove (SteeringDirection);
+			SteeringDirection = Direction.None;
 		}
 
 		public void Stop (int Remaining)

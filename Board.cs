@@ -198,12 +198,16 @@ namespace Bounce
 			}
 
 			if (player.Moving) {
-				player.Move (checkedPlayerDistance(5));
+				int steps = checkedPlayerDistance (5);
+				player.Move (steps);
+				if (steps == 0) {
+					player.Stop (0);
+				}
 			}
 			if (player.Remaining > 0) {
 				player.Move (Math.Min (5, player.Remaining));
 				if (player.Remaining == 0 && player.SteeringDirection != Player.Direction.None) {
-					player.StartMove (player.SteeringDirection);
+					player.Steer ();
 				}
 			}
 			Field playerField = crossedField (player.X, player.Y);
@@ -242,36 +246,44 @@ namespace Bounce
 			return Math.Min (steps, max);
 		}
 
+		public int calculateResidualSteps ()
+		{
+			switch (player.direction) {
+			case Player.Direction.Up:
+				return player.Y % fieldSize;
+			case Player.Direction.Down:
+				return fieldSize - player.Y % fieldSize;
+			case Player.Direction.Right:
+				return fieldSize - player.X % fieldSize;
+			case Player.Direction.Left:
+				return player.X % fieldSize;
+			default:
+				return 0;
+			}
+		}
+
 		public void MovePlayer (Player.Direction direction)
 		{
 			if (!player.Moving && player.Remaining == 0) {
 				player.StartMove (direction);
 			} else {
 				if (player.Moving) {
-					StopPlayer ();
+					StopPlayer (player.direction);
 				}
 				player.SteeringDirection = direction;
 			}
 		}
 
-		public void StopPlayer ()
+		public void StopPlayer (Player.Direction direction)
 		{
-			int steps = 0;
-			switch (player.direction) {
-			case Player.Direction.Up:
-				steps = player.Y % fieldSize;
-				break;
-			case Player.Direction.Down:
-				steps = fieldSize - player.Y % fieldSize;
-				break;
-			case Player.Direction.Right:
-				steps = fieldSize - player.X % fieldSize;
-				break;
-			case Player.Direction.Left:
-				steps = player.X % fieldSize;
-				break;
+			if (direction != Player.Direction.None) {
+				if (direction == player.direction) {
+					player.Stop (checkedPlayerDistance(calculateResidualSteps()));
+				}
+				if (direction == player.SteeringDirection) {
+					player.SteeringDirection = Player.Direction.None;
+				}
 			}
-			player.Stop (checkedPlayerDistance(steps));
 		}
 	}
 }

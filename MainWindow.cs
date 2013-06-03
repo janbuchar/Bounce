@@ -63,24 +63,27 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnKeyPressEvent (object o, KeyPressEventArgs args)
 	{
-		switch (args.Event.Key) {
-		case Gdk.Key.w:
-			board.MovePlayer (Player.Direction.Up);
-			break;
-		case Gdk.Key.s:
-			board.MovePlayer (Player.Direction.Down);
-			break;
-		case Gdk.Key.a:
-			board.MovePlayer (Player.Direction.Left);
-			break;
-		case Gdk.Key.d:
-			board.MovePlayer (Player.Direction.Right);
-			break;
-		}
+		board.MovePlayer (keyToDirection(args.Event.Key));
 	}
 
 	protected void OnKeyReleaseEvent (object o, KeyReleaseEventArgs args)
 	{
-		board.StopPlayer ();
+		board.StopPlayer (keyToDirection(args.Event.Key));
+	}
+
+	protected Player.Direction keyToDirection (Gdk.Key key)
+	{
+		switch (key) {
+		case Gdk.Key.w:
+			return (Player.Direction.Up);
+		case Gdk.Key.s:
+			return (Player.Direction.Down);
+		case Gdk.Key.a:
+			return (Player.Direction.Left);
+		case Gdk.Key.d:
+			return (Player.Direction.Right);
+		default:
+			return Player.Direction.None;
+		}
 	}
 }
