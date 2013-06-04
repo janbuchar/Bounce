@@ -82,8 +82,8 @@ namespace Bounce
 		protected void spawnBall ()
 		{
 			board.AddBall (
-				random.Next (2, board.Width), 
-				random.Next (2, board.Height), 
+				random.Next (2, board.Width - 1), 
+				random.Next (2, board.Height - 1), 
 				(int)Math.Pow (-1, random.Next (0, 2)), 
 				(int)Math.Pow (-1, random.Next (0, 2))
 			);
