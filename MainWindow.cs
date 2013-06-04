@@ -46,10 +46,9 @@ public partial class MainWindow: Gtk.Window
 			dialog.Response += delegate(object o, ResponseArgs args) {
 				if (args.ResponseId == ResponseType.Accept) {
 					terminateApplication = false;
-					LauncherWindow win = new LauncherWindow();
-					win.Show ();
+					MainClass.ShowLauncher();
 				}
-				//this.Destroy();
+				this.Destroy();
 			};
 			dialog.Run ();
 			dialog.Destroy ();
@@ -83,17 +82,10 @@ public partial class MainWindow: Gtk.Window
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
-		if (terminateApplication) {
-			Application.Quit ();
-			a.RetVal = true;
-		}
-	}
-	protected void OnDestroyEvent (object sender, DestroyEventArgs a)
-	{
-		if (terminateApplication) {
-			Application.Quit ();
-			a.RetVal = true;
-		}
+		//if (terminateApplication) {
+		//	Application.Quit ();
+		//	a.RetVal = true;
+		//}
 	}
 
 	protected void OnCanvasExposeEvent (object o, ExposeEventArgs args)

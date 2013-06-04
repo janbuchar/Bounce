@@ -16,7 +16,7 @@ namespace Bounce
 			MainWindow win = new MainWindow ();
 			win.StartGame (new Config(width.ValueAsInt, height.ValueAsInt, ballCount.ValueAsInt, lives.ValueAsInt));
 			win.Show ();
-			this.Destroy ();
+			this.Hide ();
 		}
 
 		protected void OnDeleteEvent (object sender, DeleteEventArgs a)

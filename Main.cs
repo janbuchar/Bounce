@@ -5,12 +5,19 @@ namespace Bounce
 {
 	class MainClass
 	{
+		static LauncherWindow launcher;
+
 		public static void Main (string[] args)
 		{
 			Application.Init ();
-			LauncherWindow win = new LauncherWindow ();
-			win.Show ();
+			launcher = new LauncherWindow ();
+			launcher.Show ();
 			Application.Run ();
+		}
+
+		public static void ShowLauncher ()
+		{
+			launcher.Show ();
 		}
 	}
 }

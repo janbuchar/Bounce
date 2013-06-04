@@ -158,7 +158,7 @@ namespace Bounce
 			this.DefaultWidth = 400;
 			this.DefaultHeight = 300;
 			this.Show ();
-			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDestroyEvent);
+			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 			this.playButton.Clicked += new global::System.EventHandler (this.OnPlayButtonClicked);
 		}
 	}

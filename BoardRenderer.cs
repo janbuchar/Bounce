@@ -22,24 +22,26 @@ namespace Bounce
 		public void Render (Player player, List<Ball> balls)
 		{
 			Gdk.Window canvas = area.GdkWindow;
-			using (Cairo.Context context = Gdk.CairoHelper.Create (canvas)) {
-				canvas.BeginPaintRegion (new Gdk.Region());
-				context.SetSourceSurface (background, 0, 0);
-				context.Paint ();
+			if (canvas != null) {
+				using (Cairo.Context context = Gdk.CairoHelper.Create (canvas)) {
+					canvas.BeginPaintRegion (new Gdk.Region());
+					context.SetSourceSurface (background, 0, 0);
+					context.Paint ();
 
-				foreach (Field field in player.Trail) {
-					paintTrail (context, field.X * fieldSize, field.Y * fieldSize);
+					foreach (Field field in player.Trail) {
+						paintTrail (context, field.X * fieldSize, field.Y * fieldSize);
+					}
+
+					foreach (Ball ball in balls) {
+						context.SetSourceRGB (1, 0, 0);		
+						paintCircle (context, ball.X, ball.Y);
+					}
+
+					context.SetSourceRGB (0, 0, 1);
+					paintCircle (context, player.X, player.Y);
+
+					canvas.EndPaint ();
 				}
-
-				foreach (Ball ball in balls) {
-					context.SetSourceRGB (1, 0, 0);		
-					paintCircle (context, ball.X, ball.Y);
-				}
-
-				context.SetSourceRGB (0, 0, 1);
-				paintCircle (context, player.X, player.Y);
-
-				canvas.EndPaint ();
 			}
 		}
 
