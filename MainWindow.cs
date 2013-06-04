@@ -7,7 +7,6 @@ public partial class MainWindow: Gtk.Window
 {
 	Board board;
 	Game game;
-	bool terminateApplication = true;
 
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -33,7 +32,7 @@ public partial class MainWindow: Gtk.Window
 				if (args.ResponseId == ResponseType.Accept) {
 					NextLevel (config);
 				} else {
-					this.Destroy();
+					Application.Quit ();
 				}
 			};
 			dialog.Run ();
@@ -42,13 +41,14 @@ public partial class MainWindow: Gtk.Window
 		game.GameLost += delegate(object sender, EventArgs e) {
 			MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.None, "Tak tos posral...");
 			dialog.AddButton("Nová hra", ResponseType.Accept);
-			dialog.AddButton("Konec", ResponseType.Cancel);
+			dialog.AddButton("Konec", ResponseType.Close);
 			dialog.Response += delegate(object o, ResponseArgs args) {
 				if (args.ResponseId == ResponseType.Accept) {
-					terminateApplication = false;
 					MainClass.ShowLauncher();
+					this.Destroy();
+				} else {
+					Application.Quit();
 				}
-				this.Destroy();
 			};
 			dialog.Run ();
 			dialog.Destroy ();
@@ -82,10 +82,8 @@ public partial class MainWindow: Gtk.Window
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
-		//if (terminateApplication) {
-		//	Application.Quit ();
-		//	a.RetVal = true;
-		//}
+		Application.Quit ();
+		a.RetVal = true;
 	}
 
 	protected void OnCanvasExposeEvent (object o, ExposeEventArgs args)
