@@ -35,7 +35,7 @@ public partial class MainWindow
 		this.lifeCounter.LabelProp = global::Mono.Unix.Catalog.GetString ("label1");
 		this.statusbar1.Add (this.lifeCounter);
 		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.lifeCounter]));
-		w2.Position = 1;
+		w2.Position = 2;
 		w2.Expand = false;
 		w2.Fill = false;
 		// Container child statusbar1.Gtk.Box+BoxChild
@@ -44,7 +44,7 @@ public partial class MainWindow
 		this.fillCounter.LabelProp = global::Mono.Unix.Catalog.GetString ("label2");
 		this.statusbar1.Add (this.fillCounter);
 		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.fillCounter]));
-		w3.Position = 2;
+		w3.Position = 3;
 		w3.Expand = false;
 		w3.Fill = false;
 		this.vbox1.Add (this.statusbar1);

@@ -10,8 +10,17 @@ namespace Bounce
 	{
 		Board board;
 		Random random = new Random ();
-		protected int filled;
-		protected int lives;
+
+		public int Filled {
+			get;
+			protected set;
+		}
+
+		public int Lives {
+			get;
+			protected set;
+		}
+
 		protected uint timeoutID;
 		const int victoryCondition = 70;
 
@@ -24,7 +33,7 @@ namespace Bounce
 		{
 			this.board = board;
 			board.AreaFilled += delegate(object sender, AreaFilledEventArgs e) {
-				filled += e.FilledArea;
+				Filled += e.FilledArea;
 				if (FilledAreaChanged != null) {
 					FilledAreaChanged (this, getFilledPercents ());
 				}
@@ -36,11 +45,11 @@ namespace Bounce
 				}
 			};
 			board.PlayerCollision += delegate(object sender, EventArgs e) {
-				lives -= 1;
+				Lives -= 1;
 				if (LivesChanged != null) {
-					LivesChanged (this, lives);
+					LivesChanged (this, Lives);
 				}
-				if (lives == 0) {
+				if (Lives == 0) {
 					this.End ();
 					if (GameLost != null) {
 						GameLost (this, EventArgs.Empty);
@@ -51,13 +60,13 @@ namespace Bounce
 
 		public void Start (Config config)
 		{
-			filled = 2 * board.Width + 2 * board.Height - 4;
+			Filled = 2 * board.Width + 2 * board.Height - 4;
 			if (FilledAreaChanged != null) {
 				FilledAreaChanged (this, getFilledPercents ());
 			}
-			lives = config.Lives;
+			Lives = config.Lives;
 			if (LivesChanged != null) {
-				LivesChanged (this, lives);
+				LivesChanged (this, Lives);
 			}
 			for (int i = 0; i < config.BallCount; i++) {
 				spawnBall ();
@@ -72,11 +81,13 @@ namespace Bounce
 		public void End ()
 		{
 			GLib.Source.Remove (timeoutID);
+			board.MoveBalls ();
+			board.Render ();
 		}
 
 		protected int getFilledPercents ()
 		{
-			return (int)Math.Floor ((decimal)((100 * filled) / (board.Width * board.Height)));
+			return (int)Math.Floor ((decimal)((100 * Filled) / (board.Width * board.Height)));
 		}
 
 		protected void spawnBall ()

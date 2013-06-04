@@ -7,6 +7,7 @@ public partial class MainWindow: Gtk.Window
 {
 	Board board;
 	Game game;
+	bool terminateApplication = true;
 
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -25,13 +26,31 @@ public partial class MainWindow: Gtk.Window
 	{
 		game = new Game (this.createBoard(config.Width, config.Height));
 		game.GameWon += delegate(object sender, EventArgs e) {
-			MessageDialog dialog = new MessageDialog (this, DialogFlags.Modal, MessageType.Info, ButtonsType.Close, "Jedeš vole!");
+			MessageDialog dialog = new MessageDialog (this, DialogFlags.Modal, MessageType.Info, ButtonsType.None, "Jedeš vole!");
+			dialog.AddButton ("Další kolo", ResponseType.Accept);
+			dialog.AddButton ("Konec hry", ResponseType.Cancel);
+			dialog.Response += delegate(object o, ResponseArgs args) {
+				if (args.ResponseId == ResponseType.Accept) {
+					NextLevel (config);
+				} else {
+					this.Destroy();
+				}
+			};
 			dialog.Run ();
 			dialog.Destroy ();
-			NextLevel (config);
 		};
 		game.GameLost += delegate(object sender, EventArgs e) {
-			MessageDialog dialog = new MessageDialog (this, DialogFlags.Modal, MessageType.Info, ButtonsType.Close, "No tak tos posral...");
+			MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.None, "Tak tos posral...");
+			dialog.AddButton("Nová hra", ResponseType.Accept);
+			dialog.AddButton("Konec", ResponseType.Cancel);
+			dialog.Response += delegate(object o, ResponseArgs args) {
+				if (args.ResponseId == ResponseType.Accept) {
+					terminateApplication = false;
+					LauncherWindow win = new LauncherWindow();
+					win.Show ();
+				}
+				//this.Destroy();
+			};
 			dialog.Run ();
 			dialog.Destroy ();
 		};
@@ -47,7 +66,7 @@ public partial class MainWindow: Gtk.Window
 	protected void NextLevel (Config config)
 	{
 		config.BallCount += 1;
-		config.Lives += 1;
+		config.Lives = game.Lives + 1;
 		board.Clear ();
 		game.Start (config);
 	}
@@ -61,11 +80,20 @@ public partial class MainWindow: Gtk.Window
 	{
 		fillCounter.Text = String.Format ("Zaplněno: {0}%", value);
 	}
-
+	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
-		Application.Quit ();
-		a.RetVal = true;
+		if (terminateApplication) {
+			Application.Quit ();
+			a.RetVal = true;
+		}
+	}
+	protected void OnDestroyEvent (object sender, DestroyEventArgs a)
+	{
+		if (terminateApplication) {
+			Application.Quit ();
+			a.RetVal = true;
+		}
 	}
 
 	protected void OnCanvasExposeEvent (object o, ExposeEventArgs args)
