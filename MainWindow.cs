@@ -6,6 +6,7 @@ using Bounce;
 public partial class MainWindow: Gtk.Window
 {
 	Board board;
+	Game game;
 
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -22,14 +23,17 @@ public partial class MainWindow: Gtk.Window
 
 	public void StartGame (Config config)
 	{
-		Game game = new Game (this.createBoard(config.Width, config.Height));
+		game = new Game (this.createBoard(config.Width, config.Height));
 		game.GameWon += delegate(object sender, EventArgs e) {
 			MessageDialog dialog = new MessageDialog (this, DialogFlags.Modal, MessageType.Info, ButtonsType.Close, "Jedeš vole!");
-			dialog.Show ();
+			dialog.Run ();
+			dialog.Destroy ();
+			NextLevel (config);
 		};
 		game.GameLost += delegate(object sender, EventArgs e) {
 			MessageDialog dialog = new MessageDialog (this, DialogFlags.Modal, MessageType.Info, ButtonsType.Close, "No tak tos posral...");
-			dialog.Show ();
+			dialog.Run ();
+			dialog.Destroy ();
 		};
 		game.FilledAreaChanged += delegate(object sender, int Value) {
 			setFillCounter (Value);
@@ -37,6 +41,14 @@ public partial class MainWindow: Gtk.Window
 		game.LivesChanged += delegate(object sender, int Value) {
 			setLifeCounter (Value);
 		};
+		game.Start (config);
+	}
+
+	protected void NextLevel (Config config)
+	{
+		config.BallCount += 1;
+		config.Lives += 1;
+		board.Clear ();
 		game.Start (config);
 	}
 

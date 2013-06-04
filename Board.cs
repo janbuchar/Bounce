@@ -33,11 +33,23 @@ namespace Bounce
 
 		public Board (int width, int height, int fieldSize, BoardRenderer renderer)
 		{
-			fields = new Field[width, height];
-			for (int i = 0; i < width; i++) {
-				for (int j = 0; j < height; j++) {
+			this.renderer = renderer;
+			this.Width = width;
+			this.Height = height;
+			this.Clear ();
+			this.fieldSize = fieldSize;
+			renderer.RefreshBackground (fields);
+		}
+
+		public void Clear ()
+		{
+			player = new Player (0, 0);
+			balls = new List<Ball> ();
+			fields = new Field[Width, Height];
+			for (int i = 0; i < Width; i++) {
+				for (int j = 0; j < Height; j++) {
 					fields [i, j] = new Field ();
-					if (i == 0 || j == 0 || i + 1 == width || j + 1 == height) {
+					if (i == 0 || j == 0 || i + 1 == Width || j + 1 == Height) {
 						fields [i, j].Full = true;
 					} else {
 						fields [i, j].Full = false;
@@ -46,11 +58,6 @@ namespace Bounce
 					fields [i, j].Y = j;
 				}
 			}
-			this.renderer = renderer;
-			this.Width = width;
-			this.Height = height;
-			this.fieldSize = fieldSize;
-			renderer.RefreshBackground (fields);
 		}
 
 		public void Render ()
