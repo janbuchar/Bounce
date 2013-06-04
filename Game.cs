@@ -4,8 +4,8 @@ namespace Bounce
 {
 	public delegate void GameWonHandler (object sender, EventArgs e);
 	public delegate void GameLostHandler (object sender, EventArgs e);
-	public delegate void LivesChangedHandler (object sender, int Value);
-	public delegate void FilledAreaChangedHandler (object sender, int Value);
+	public delegate void LivesChangedHandler (object sender, int value);
+	public delegate void FilledAreaChangedHandler (object sender, int value);
 	public class Game
 	{
 		Board board;

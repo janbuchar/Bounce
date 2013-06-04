@@ -35,11 +35,11 @@ public partial class MainWindow: Gtk.Window
 			dialog.Run ();
 			dialog.Destroy ();
 		};
-		game.FilledAreaChanged += delegate(object sender, int Value) {
-			setFillCounter (Value);
+		game.FilledAreaChanged += delegate(object sender, int value) {
+			setFillCounter (value);
 		};
-		game.LivesChanged += delegate(object sender, int Value) {
-			setLifeCounter (Value);
+		game.LivesChanged += delegate(object sender, int value) {
+			setLifeCounter (value);
 		};
 		game.Start (config);
 	}
