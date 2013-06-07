@@ -88,7 +88,7 @@
   </widget>
   <widget class="Gtk.Window" id="Bounce.LauncherWindow" design-size="400 300">
     <property name="MemberName" />
-    <property name="Title" translatable="yes">LauncherWindow</property>
+    <property name="Title" translatable="yes">Bounce - Nová hra</property>
     <property name="WindowPosition">CenterOnParent</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>

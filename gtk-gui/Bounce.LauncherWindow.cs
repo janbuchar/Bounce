@@ -23,7 +23,7 @@ namespace Bounce
 			global::Stetic.Gui.Initialize (this);
 			// Widget Bounce.LauncherWindow
 			this.Name = "Bounce.LauncherWindow";
-			this.Title = global::Mono.Unix.Catalog.GetString ("LauncherWindow");
+			this.Title = global::Mono.Unix.Catalog.GetString ("Bounce - Nová hra");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Container child Bounce.LauncherWindow.Gtk.Container+ContainerChild
 			this.vbox2 = new global::Gtk.VBox ();
