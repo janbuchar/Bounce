@@ -91,29 +91,30 @@ namespace Bounce
 			bool[,] visited = new bool[Width, Height]; 
 
 			List<Field> reserve = new List<Field> ();
+			
+			Func<bool> visitedAll = (delegate () {
+				for (int i = 0; i < visited.GetLength(0); i++) {
+					for (int j = 0; j < visited.GetLength(1); j++) {
+						if (!visited[i, j] && !fields [i, j].Full) {
+							return false;
+						}
+					}
+				}
+				return true;
+			});
+			
 			do {
 				reserve = calculateReserve (ballMap, visited);
 				foreach (Field field in reserve) {
 					field.Full = true;
 					filled += 1;
 				}
-			} while (!isFull(visited));
+			} while (!visitedAll());
+			
 			renderer.RefreshBackground (fields);
 			if (AreaFilled != null) {
 				AreaFilled (this, new AreaFilledEventArgs (filled));
 			}
-		}
-
-		private bool isFull (bool[,] value)
-		{
-			for (int i = 0; i < value.GetLength(0); i++) {
-				for (int j = 0; j < value.GetLength(1); j++) {
-					if (!value [i, j] && !fields [i, j].Full) {
-						return false;
-					}
-				}
-			}
-			return true;
 		}
 
 		protected List<Field> calculateReserve (List<Field> ballMap, bool[,] visited)
