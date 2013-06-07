@@ -80,9 +80,9 @@ namespace Bounce
 
 		public void End ()
 		{
-			GLib.Source.Remove (timeoutID);
 			board.MoveBalls ();
 			board.Render ();
+			GLib.Source.Remove (timeoutID);
 		}
 
 		protected int getFilledPercents ()

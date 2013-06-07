@@ -81,7 +81,7 @@ namespace Bounce
 			int filled = 0;
 			List<Field> ballMap = new List<Field> ();
 			foreach (Ball ball in balls) {
-				ballMap.Add (crossedField(ball.X, ball.Y));
+				ballMap.Add (crossedField (ball.X, ball.Y));
 			}
 			while (player.Trail.Count > 0) {
 				player.Trail.Dequeue ().Full = true;
@@ -97,10 +97,10 @@ namespace Bounce
 					filled += 1;
 				}
 			} while (!isFull(visited));
+			renderer.RefreshBackground (fields);
 			if (AreaFilled != null) {
 				AreaFilled (this, new AreaFilledEventArgs (filled));
 			}
-			renderer.RefreshBackground (fields);
 		}
 
 		private bool isFull (bool[,] value)
