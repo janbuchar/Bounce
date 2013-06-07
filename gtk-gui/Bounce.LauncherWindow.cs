@@ -122,7 +122,7 @@ namespace Bounce
 			this.timePerBall.Adjustment.PageIncrement = 10;
 			this.timePerBall.ClimbRate = 1;
 			this.timePerBall.Numeric = true;
-			this.timePerBall.Value = 20;
+			this.timePerBall.Value = 30;
 			this.table1.Add (this.timePerBall);
 			global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1 [this.timePerBall]));
 			w7.TopAttach = ((uint)(4));

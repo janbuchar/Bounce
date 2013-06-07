@@ -58,6 +58,7 @@ namespace Bounce
 					fields [i, j].Y = j;
 				}
 			}
+			renderer.RefreshBackground (fields);
 		}
 
 		public void Render ()
