@@ -66,13 +66,13 @@ public partial class MainWindow: Gtk.Window
 			dialog.Destroy ();
 		};
 		game.FilledAreaChanged += delegate(object sender, int value) {
-			setFillCounter (value);
+			fillCounter.Text = String.Format ("Zaplněno: {0}%", value);
 		};
 		game.LivesChanged += delegate(object sender, int value) {
-			setLifeCounter (value);
+			lifeCounter.Text = String.Format ("Životy: {0}", value);
 		};
 		game.RemainingTimeChanged += delegate(object sender, int value) {
-			setRemainingTimeCounter (value);
+			remainingTimeCounter.Text = string.Format ("Zbývající čas: {0} sekund", value);
 		};
 		game.Start (config);
 	}
@@ -83,21 +83,6 @@ public partial class MainWindow: Gtk.Window
 		config.Lives = game.Lives + 1;
 		board.Clear ();
 		game.Start (config);
-	}
-
-	protected void setLifeCounter (int value)
-	{
-		lifeCounter.Text = String.Format ("Životy: {0}", value);
-	}
-
-	protected void setFillCounter (int value)
-	{
-		fillCounter.Text = String.Format ("Zaplněno: {0}%", value);
-	}
-	
-	protected void setRemainingTimeCounter (int time)
-	{
-		remainingTimeCounter.Text = string.Format ("Zbývá {0} sekund", time);
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
