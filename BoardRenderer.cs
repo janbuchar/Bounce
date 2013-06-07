@@ -38,7 +38,7 @@ namespace Bounce
 					}
 
 					context.SetSourceRGB (0, 0, 1);
-					paintCircle (context, player.X, player.Y);
+					paintPlayer (context, player);
 
 					canvas.EndPaint ();
 				}
@@ -113,6 +113,35 @@ namespace Bounce
 			context.Arc (x + fieldSize / 2, y + fieldSize / 2, fieldSize / 2, 0, 2 * Math.PI);
 			context.FillPreserve ();
 			context.NewPath ();
+		}
+		
+		protected void paintPlayer (Cairo.Context context, Player player)
+		{
+			context.Save ();
+			context.Translate (player.X, player.Y);
+			switch (player.direction) {
+			case Player.Direction.Down:
+				context.Rotate (Math.PI);
+				context.Translate (- fieldSize, - fieldSize);
+				break;
+			case Player.Direction.Right:
+				context.Rotate (Math.PI / 2);
+				context.Translate ( 0, - fieldSize);
+				break;
+			case Player.Direction.Left:
+				context.Rotate (3 * Math.PI / 2);
+				context.Translate (- fieldSize, 0);
+				break;
+			}
+			context.MoveTo (fieldSize / 2, 0);
+			context.LineTo (fieldSize, fieldSize);
+			context.LineTo (fieldSize / 2, 3 * fieldSize / 4);
+			context.LineTo (0, fieldSize);
+			context.LineTo (fieldSize / 2, 0);
+			context.SetSourceRGB (0, 0, 1);
+			context.FillPreserve ();
+			context.NewPath ();
+			context.Restore ();
 		}
 	}
 }
