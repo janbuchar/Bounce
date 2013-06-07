@@ -23,9 +23,15 @@ public partial class MainWindow: Gtk.Window
 
 	public void StartGame (Config config)
 	{
-		game = new Game (this.createBoard(config.Width, config.Height));
+		game = new Game (this.createBoard (config.Width, config.Height));
 		game.GameWon += delegate(object sender, EventArgs e) {
-			MessageDialog dialog = new MessageDialog (this, DialogFlags.Modal, MessageType.Info, ButtonsType.None, "Jedeš vole!");
+			MessageDialog dialog = new MessageDialog (
+				this,
+				DialogFlags.Modal,
+				MessageType.Info,
+				ButtonsType.None,
+				"Jedeš vole!"
+			);
 			dialog.AddButton ("Další kolo", ResponseType.Accept);
 			dialog.AddButton ("Konec hry", ResponseType.Cancel);
 			dialog.Response += delegate(object o, ResponseArgs args) {
@@ -39,15 +45,21 @@ public partial class MainWindow: Gtk.Window
 			dialog.Destroy ();
 		};
 		game.GameLost += delegate(object sender, EventArgs e) {
-			MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.None, "Tak tos posral...");
-			dialog.AddButton("Nová hra", ResponseType.Accept);
-			dialog.AddButton("Konec", ResponseType.Close);
+			MessageDialog dialog = new MessageDialog (
+				this,
+				DialogFlags.Modal,
+				MessageType.Info,
+				ButtonsType.None,
+				"Tak tos posral..."
+			);
+			dialog.AddButton ("Nová hra", ResponseType.Accept);
+			dialog.AddButton ("Konec", ResponseType.Close);
 			dialog.Response += delegate(object o, ResponseArgs args) {
 				if (args.ResponseId == ResponseType.Accept) {
-					MainClass.ShowLauncher();
-					this.Destroy();
+					MainClass.ShowLauncher ();
+					this.Destroy ();
 				} else {
-					Application.Quit();
+					Application.Quit ();
 				}
 			};
 			dialog.Run ();
@@ -58,6 +70,9 @@ public partial class MainWindow: Gtk.Window
 		};
 		game.LivesChanged += delegate(object sender, int value) {
 			setLifeCounter (value);
+		};
+		game.RemainingTimeChanged += delegate(object sender, int value) {
+			setRemainingTimeCounter (value);
 		};
 		game.Start (config);
 	}
@@ -78,6 +93,11 @@ public partial class MainWindow: Gtk.Window
 	protected void setFillCounter (int value)
 	{
 		fillCounter.Text = String.Format ("Zaplněno: {0}%", value);
+	}
+	
+	protected void setRemainingTimeCounter (int time)
+	{
+		remainingTimeCounter.Text = string.Format ("Zbývá {0} sekund", time);
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)

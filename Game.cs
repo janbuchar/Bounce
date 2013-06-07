@@ -6,6 +6,7 @@ namespace Bounce
 	public delegate void GameLostHandler (object sender, EventArgs e);
 	public delegate void LivesChangedHandler (object sender, int value);
 	public delegate void FilledAreaChangedHandler (object sender, int value);
+	public delegate void RemainingTimeChangedHandler (object sender, int value);
 	public class Game
 	{
 		Board board;
@@ -21,14 +22,16 @@ namespace Bounce
 			protected set;
 		}
 
-		protected uint timeoutID;
+		protected uint renderTimeoutID;
+		protected uint limitTimeoutID;
 		const int victoryCondition = 70;
 
 		public event GameWonHandler GameWon;
 		public event GameLostHandler GameLost;
 		public event LivesChangedHandler LivesChanged;
 		public event FilledAreaChangedHandler FilledAreaChanged;
-
+		public event RemainingTimeChangedHandler RemainingTimeChanged;
+		
 		public Game (Board board)
 		{
 			this.board = board;
@@ -71,9 +74,31 @@ namespace Bounce
 			for (int i = 0; i < config.BallCount; i++) {
 				spawnBall ();
 			}
-			timeoutID = GLib.Timeout.Add (40, delegate {
+			renderTimeoutID = GLib.Timeout.Add (40, delegate {
 				board.MoveBalls ();
 				board.Render ();
+				return true;
+			}
+			);
+			DateTime start = DateTime.Now;
+			int limit = config.TimePerBall * config.BallCount;
+			if (RemainingTimeChanged != null) {
+				RemainingTimeChanged (this, limit);
+			}
+			int passed = 0;
+			
+			limitTimeoutID = GLib.Timeout.Add (500, delegate {
+				int newPassed = (int)(DateTime.Now - start).TotalSeconds;
+				if (newPassed > passed) {
+					passed = newPassed;
+					if (RemainingTimeChanged != null) {
+						RemainingTimeChanged (this, Math.Max (limit - passed, 0));
+					}
+					if (passed > limit && GameLost != null) {
+						End ();
+						GameLost (this, EventArgs.Empty);
+					}
+				}
 				return true;
 			});
 		}
@@ -82,7 +107,8 @@ namespace Bounce
 		{
 			board.MoveBalls ();
 			board.Render ();
-			GLib.Source.Remove (timeoutID);
+			GLib.Source.Remove (renderTimeoutID);
+			GLib.Source.Remove (limitTimeoutID);
 		}
 
 		protected int getFilledPercents ()
@@ -103,14 +129,15 @@ namespace Bounce
 
 	public class Config
 	{
-		public int Width, Height, BallCount, Lives;
+		public int Width, Height, BallCount, Lives, TimePerBall;
 
-		public Config (int Width = 0, int Height = 0, int BallCount = 0, int Lives = 0)
+		public Config (int Width = 0, int Height = 0, int BallCount = 0, int Lives = 0, int TimePerBall = 0)
 		{
 			this.Width = Width;
 			this.Height = Height;
 			this.BallCount = BallCount;
 			this.Lives = Lives;
+			this.TimePerBall = TimePerBall;
 		}
 	}
 }
