@@ -24,6 +24,7 @@ namespace Bounce
 
 		protected uint renderTimeoutID;
 		protected uint limitTimeoutID;
+		int passed, limit;
 		const int victoryCondition = 70;
 
 		public event GameWonHandler GameWon;
@@ -77,27 +78,13 @@ namespace Bounce
 			
 			startRenderTimeout ();
 			
-			DateTime start = DateTime.Now;
-			int limit = config.TimePerBall * config.BallCount;
+			limit = config.TimePerBall * config.BallCount;
 			if (RemainingTimeChanged != null) {
 				RemainingTimeChanged (this, limit);
 			}
-			int passed = 0;
+			passed = 0;
 			
-			limitTimeoutID = GLib.Timeout.Add (500, delegate {
-				int newPassed = (int)(DateTime.Now - start).TotalSeconds;
-				if (newPassed > passed) {
-					passed = newPassed;
-					if (RemainingTimeChanged != null) {
-						RemainingTimeChanged (this, Math.Max (limit - passed, 0));
-					}
-					if (passed > limit && GameLost != null) {
-						End ();
-						GameLost (this, EventArgs.Empty);
-					}
-				}
-				return true;
-			});
+			startLimitTimeout ();
 		}
 
 		public void End ()
@@ -113,6 +100,26 @@ namespace Bounce
 			renderTimeoutID = GLib.Timeout.Add (40, delegate {
 				board.MoveBalls ();
 				board.Render ();
+				return true;
+			});
+		}
+		
+		protected void startLimitTimeout ()
+		{
+			DateTime start = DateTime.Now;
+			int initPassed = passed;
+			limitTimeoutID = GLib.Timeout.Add (200, delegate {
+				int newPassed = initPassed + (int)(DateTime.Now - start).TotalSeconds;
+				if (newPassed > passed) {
+					passed = newPassed;
+					if (RemainingTimeChanged != null) {
+						RemainingTimeChanged (this, Math.Max (limit - passed, 0));
+					}
+					if (passed > limit && GameLost != null) {
+						End ();
+						GameLost (this, EventArgs.Empty);
+					}
+				}
 				return true;
 			});
 		}
