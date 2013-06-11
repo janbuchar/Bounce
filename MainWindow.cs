@@ -27,10 +27,10 @@ public partial class MainWindow: Gtk.Window
 		game.GameWon += delegate(object sender, EventArgs e) {
 			MessageDialog dialog = new MessageDialog (
 				this,
-				DialogFlags.Modal,
-				MessageType.Info,
-				ButtonsType.None,
-				"Jedeš vole!"
+			 DialogFlags.Modal,
+			 MessageType.Info,
+			 ButtonsType.None,
+			 "Jedeš vole!"
 			);
 			dialog.AddButton ("Další kolo", ResponseType.Accept);
 			dialog.AddButton ("Konec hry", ResponseType.Cancel);
@@ -77,6 +77,12 @@ public partial class MainWindow: Gtk.Window
 		game.Start (config);
 	}
 
+	protected void PauseGame ()
+	{
+		game.Pause ();
+		board.OverlayText = "Hra je pozastavena. Stiskněte libovolnou klávesu a pojede to.";
+	}
+
 	protected void NextLevel (Config config)
 	{
 		config.BallCount += 1;
@@ -84,7 +90,14 @@ public partial class MainWindow: Gtk.Window
 		board.Clear ();
 		game.Start (config);
 	}
-	
+
+	protected void OnFocusOutEvent (object sender, FocusOutEventArgs args)
+	{
+		if (game.Running) {
+			PauseGame ();
+		}
+	}
+
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
 		Application.Quit ();
@@ -93,12 +106,18 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnCanvasExposeEvent (object o, ExposeEventArgs args)
 	{
-		board.Render ();
+		if (game.Running) {
+			board.Render ();
+		}
 	}
 
 	protected void OnKeyPressEvent (object o, KeyPressEventArgs args)
 	{
-		board.MovePlayer (keyToDirection(args.Event.Key));
+		if (!game.Running) {
+			game.Resume ();
+		} else {
+			board.MovePlayer (keyToDirection(args.Event.Key));
+		}
 	}
 
 	protected void OnKeyReleaseEvent (object o, KeyReleaseEventArgs args)

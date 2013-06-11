@@ -22,6 +22,11 @@ namespace Bounce
 			protected set;
 		}
 
+		public bool Running {
+			get;
+			protected set;
+		}
+
 		protected uint renderTimeoutID;
 		protected uint limitTimeoutID;
 		int passed, limit;
@@ -32,7 +37,7 @@ namespace Bounce
 		public event LivesChangedHandler LivesChanged;
 		public event FilledAreaChangedHandler FilledAreaChanged;
 		public event RemainingTimeChangedHandler RemainingTimeChanged;
-		
+
 		public Game (Board board)
 		{
 			this.board = board;
@@ -60,6 +65,7 @@ namespace Bounce
 					}
 				}
 			};
+			Running = false;
 		}
 
 		public void Start (Config config)
@@ -85,6 +91,7 @@ namespace Bounce
 			passed = 0;
 			
 			startLimitTimeout ();
+			Running = true;
 		}
 
 		public void End ()
@@ -93,6 +100,21 @@ namespace Bounce
 			board.Render ();
 			GLib.Source.Remove (renderTimeoutID);
 			GLib.Source.Remove (limitTimeoutID);
+			Running = false;
+		}
+
+		public void Pause ()
+		{
+			GLib.Source.Remove (renderTimeoutID);
+			GLib.Source.Remove (limitTimeoutID);
+			Running = false;
+		}
+
+		public void Resume ()
+		{
+			Running = true;
+			startRenderTimeout ();
+			startLimitTimeout ();
 		}
 
 		protected void startRenderTimeout ()
@@ -103,7 +125,7 @@ namespace Bounce
 				return true;
 			});
 		}
-		
+
 		protected void startLimitTimeout ()
 		{
 			DateTime start = DateTime.Now;
@@ -123,7 +145,7 @@ namespace Bounce
 				return true;
 			});
 		}
-		
+
 		protected int getFilledPercents ()
 		{
 			return (int)Math.Floor ((decimal)((100 * Filled) / (board.Width * board.Height)));

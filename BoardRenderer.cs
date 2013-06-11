@@ -49,7 +49,6 @@ namespace Bounce
 		{
 			Gdk.Window canvas = area.GdkWindow;
 			using (Cairo.Context context = Gdk.CairoHelper.Create(canvas)) {
-				canvas.BeginPaintRegion (new Gdk.Region ());
 				context.SetSourceRGBA (1, 1, 0, 0.5);
 				context.Rectangle (new Cairo.Rectangle (0, 0, fieldSize * (width), fieldSize * (height)));
 				context.Paint ();
@@ -61,7 +60,7 @@ namespace Bounce
 				context.ShowText (text);
 			}
 		}
-		
+
 		public void RefreshBackground (Field[,] fields)
 		{
 			background = new Cairo.ImageSurface (Cairo.Format.ARGB32, width * fieldSize, height * fieldSize);
@@ -131,7 +130,7 @@ namespace Bounce
 			context.FillPreserve ();
 			context.NewPath ();
 		}
-		
+
 		protected void paintPlayer (Cairo.Context context, Player player)
 		{
 			context.Save ();
@@ -143,7 +142,7 @@ namespace Bounce
 				break;
 			case Player.Direction.Right:
 				context.Rotate (Math.PI / 2);
-				context.Translate ( 0, - fieldSize);
+				context.Translate (0, - fieldSize);
 				break;
 			case Player.Direction.Left:
 				context.Rotate (3 * Math.PI / 2);
