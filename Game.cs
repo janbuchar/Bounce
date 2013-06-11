@@ -74,12 +74,9 @@ namespace Bounce
 			for (int i = 0; i < config.BallCount; i++) {
 				spawnBall ();
 			}
-			renderTimeoutID = GLib.Timeout.Add (40, delegate {
-				board.MoveBalls ();
-				board.Render ();
-				return true;
-			}
-			);
+			
+			startRenderTimeout ();
+			
 			DateTime start = DateTime.Now;
 			int limit = config.TimePerBall * config.BallCount;
 			if (RemainingTimeChanged != null) {
@@ -111,6 +108,15 @@ namespace Bounce
 			GLib.Source.Remove (limitTimeoutID);
 		}
 
+		protected void startRenderTimeout ()
+		{
+			renderTimeoutID = GLib.Timeout.Add (40, delegate {
+				board.MoveBalls ();
+				board.Render ();
+				return true;
+			});
+		}
+		
 		protected int getFilledPercents ()
 		{
 			return (int)Math.Floor ((decimal)((100 * Filled) / (board.Width * board.Height)));
