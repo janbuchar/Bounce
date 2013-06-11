@@ -23,6 +23,11 @@ namespace Bounce
 		private Field[,] fields;
 		int fieldSize;
 		BoardRenderer renderer;
+		public string OverlayText {
+			set {
+				renderer.RenderOverlay (value);
+			}
+		}
 
 		public int Width { get; protected set; }
 

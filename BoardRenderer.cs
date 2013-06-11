@@ -45,6 +45,23 @@ namespace Bounce
 			}
 		}
 
+		public void RenderOverlay (string text)
+		{
+			Gdk.Window canvas = area.GdkWindow;
+			using (Cairo.Context context = Gdk.CairoHelper.Create(canvas)) {
+				canvas.BeginPaintRegion (new Gdk.Region ());
+				context.SetSourceRGBA (1, 1, 0, 0.5);
+				context.Rectangle (new Cairo.Rectangle (0, 0, fieldSize * (width), fieldSize * (height)));
+				context.Paint ();
+				context.SetSourceRGBA (1, 1, 1, 1);
+				context.SelectFontFace ("sans-serif", Cairo.FontSlant.Normal, Cairo.FontWeight.Bold);
+				context.SetFontSize (30);
+				Cairo.TextExtents extents = context.TextExtents (text);
+				context.MoveTo ((width * fieldSize - extents.Width) / 2 - extents.XBearing, (height * fieldSize - extents.Height) / 2 - extents.YBearing);
+				context.ShowText (text);
+			}
+		}
+		
 		public void RefreshBackground (Field[,] fields)
 		{
 			background = new Cairo.ImageSurface (Cairo.Format.ARGB32, width * fieldSize, height * fieldSize);
