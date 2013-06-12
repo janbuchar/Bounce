@@ -53,11 +53,17 @@ namespace Bounce
 				context.Rectangle (new Cairo.Rectangle (0, 0, fieldSize * (width), fieldSize * (height)));
 				context.Paint ();
 				context.SetSourceRGBA (1, 1, 1, 1);
-				context.SelectFontFace ("sans-serif", Cairo.FontSlant.Normal, Cairo.FontWeight.Bold);
-				context.SetFontSize (30);
-				Cairo.TextExtents extents = context.TextExtents (text);
-				context.MoveTo ((width * fieldSize - extents.Width) / 2 - extents.XBearing, (height * fieldSize - extents.Height) / 2 - extents.YBearing);
-				context.ShowText (text);
+				Pango.Layout layout = Pango.CairoHelper.CreateLayout (context);
+				layout.Width = (int)(width * fieldSize * Pango.Scale.PangoScale);
+				layout.Alignment = Pango.Alignment.Center;
+				layout.Wrap = Pango.WrapMode.Word;
+				layout.FontDescription = Pango.FontDescription.FromString ("sans-serif 30");
+				layout.SetText (text);
+				int layoutWidth, layoutHeight;
+				layout.GetPixelSize (out layoutWidth, out layoutHeight);
+				context.MoveTo (0, (height * fieldSize - layoutHeight) / 2);
+				Pango.CairoHelper.UpdateLayout (context, layout);
+				Pango.CairoHelper.ShowLayout (context, layout);
 			}
 		}
 
