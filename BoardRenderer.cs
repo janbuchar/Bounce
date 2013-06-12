@@ -93,14 +93,14 @@ namespace Bounce
 			context.LineWidth = 0.3;
 			context.SetSourceRGBA (0, 0, 0, 0.2);
 			for (int i = 0; i < width; i++) {
-				context.MoveTo (new Cairo.PointD (i * fieldSize, 0));
-				context.LineTo (new Cairo.PointD (i * fieldSize, height * fieldSize));
+				context.MoveTo (i * fieldSize, 0);
+				context.LineTo (i * fieldSize, height * fieldSize);
 				context.Stroke ();
 				context.NewPath ();
 			}
 			for (int i = 0; i < height; i++) {
-				context.MoveTo (new Cairo.PointD (0, i * fieldSize));
-				context.LineTo (new Cairo.PointD (width * fieldSize, i * fieldSize));
+				context.MoveTo (0, i * fieldSize);
+				context.LineTo (width * fieldSize, i * fieldSize);
 				context.Stroke ();
 				context.NewPath ();
 			}
@@ -111,7 +111,7 @@ namespace Bounce
 			context.Save ();
 			context.SetSourceRGB (0, 0, 1);
 			context.Translate (x, y);
-			context.Rectangle (new Cairo.Rectangle (new Cairo.Point (0, 0), fieldSize, fieldSize));
+			context.Rectangle (new Cairo.Rectangle (0, 0, fieldSize, fieldSize));
 			context.SetSourceRGBA (0, 0, 0, fill ? 0.5 : 0.3);
 			context.FillPreserve ();
 			context.NewPath ();
@@ -123,7 +123,7 @@ namespace Bounce
 			context.Save ();
 			context.SetSourceRGB (0, 1, 0);
 			context.Translate (x, y);
-			context.Rectangle (new Cairo.Rectangle (new Cairo.Point (0, 0), fieldSize, fieldSize));
+			context.Rectangle (new Cairo.Rectangle (0, 0, fieldSize, fieldSize));
 			context.SetSourceRGBA (0, 1, 0, 0.3);
 			context.FillPreserve ();
 			context.NewPath ();
