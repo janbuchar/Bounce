@@ -135,19 +135,19 @@ public partial class MainWindow: Gtk.Window
 		board.StopPlayer (keyToDirection(args.Event.Key));
 	}
 
-	protected Player.Direction keyToDirection (Gdk.Key key)
+	protected Direction keyToDirection (Gdk.Key key)
 	{
 		switch (key) {
 		case Gdk.Key.w:
-			return (Player.Direction.Up);
+			return Bounce.Direction.Up;
 		case Gdk.Key.s:
-			return (Player.Direction.Down);
+			return Bounce.Direction.Down;
 		case Gdk.Key.a:
-			return (Player.Direction.Left);
+			return Bounce.Direction.Left;
 		case Gdk.Key.d:
-			return (Player.Direction.Right);
+			return Bounce.Direction.Right;
 		default:
-			return Player.Direction.None;
+			return Bounce.Direction.None;
 		}
 	}
 }

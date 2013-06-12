@@ -23,6 +23,7 @@ namespace Bounce
 		private Field[,] fields;
 		int fieldSize;
 		BoardRenderer renderer;
+
 		public string OverlayText {
 			set {
 				renderer.RenderOverlay (value);
@@ -100,7 +101,7 @@ namespace Bounce
 			Func<bool> visitedAll = (delegate () {
 				for (int i = 0; i < visited.GetLength(0); i++) {
 					for (int j = 0; j < visited.GetLength(1); j++) {
-						if (!visited[i, j] && !fields [i, j].Full) {
+						if (!visited [i, j] && !fields [i, j].Full) {
 							return false;
 						}
 					}
@@ -220,7 +221,7 @@ namespace Bounce
 			}
 			if (player.Remaining > 0) {
 				player.Move (Math.Min (5, player.Remaining));
-				if (player.Remaining == 0 && player.SteeringDirection != Player.Direction.None) {
+				if (player.Remaining == 0 && player.SteeringDirection != Direction.None) {
 					player.Steer ();
 				}
 			}
@@ -244,16 +245,16 @@ namespace Bounce
 		{
 			int max = 0;
 			switch (player.direction) {
-			case Player.Direction.Down:
+			case Direction.Down:
 				max = Height * fieldSize - (player.Y + fieldSize);
 				break;
-			case Player.Direction.Up:
+			case Direction.Up:
 				max = player.Y;
 				break;
-			case Player.Direction.Right:
+			case Direction.Right:
 				max = Width * fieldSize - (player.X + fieldSize);
 				break;
-			case Player.Direction.Left:
+			case Direction.Left:
 				max = player.X;
 				break;
 			}
@@ -263,20 +264,20 @@ namespace Bounce
 		public int calculateResidualSteps ()
 		{
 			switch (player.direction) {
-			case Player.Direction.Up:
+			case Direction.Up:
 				return player.Y % fieldSize;
-			case Player.Direction.Down:
+			case Direction.Down:
 				return fieldSize - player.Y % fieldSize;
-			case Player.Direction.Right:
+			case Direction.Right:
 				return fieldSize - player.X % fieldSize;
-			case Player.Direction.Left:
+			case Direction.Left:
 				return player.X % fieldSize;
 			default:
 				return 0;
 			}
 		}
 
-		public void MovePlayer (Player.Direction direction)
+		public void MovePlayer (Direction direction)
 		{
 			if (!player.Moving && player.Remaining == 0) {
 				player.StartMove (direction);
@@ -288,14 +289,14 @@ namespace Bounce
 			}
 		}
 
-		public void StopPlayer (Player.Direction direction)
+		public void StopPlayer (Direction direction)
 		{
-			if (direction != Player.Direction.None) {
+			if (direction != Direction.None) {
 				if (direction == player.direction) {
 					player.Stop (checkedPlayerDistance(calculateResidualSteps()));
 				}
 				if (direction == player.SteeringDirection) {
-					player.SteeringDirection = Player.Direction.None;
+					player.SteeringDirection = Direction.None;
 				}
 			}
 		}

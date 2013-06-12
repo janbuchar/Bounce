@@ -5,19 +5,6 @@ namespace Bounce
 {
 	public class Player
 	{
-		public enum Direction
-		{
-			None
-,
-			Up
-,
-			Down
-,
-			Right
-,
-			Left
-		}
-
 		public Direction direction {
 			get;
 			protected set;

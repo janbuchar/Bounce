@@ -142,15 +142,15 @@ namespace Bounce
 			context.Save ();
 			context.Translate (player.X, player.Y);
 			switch (player.direction) {
-			case Player.Direction.Down:
+			case Direction.Down:
 				context.Rotate (Math.PI);
 				context.Translate (- fieldSize, - fieldSize);
 				break;
-			case Player.Direction.Right:
+			case Direction.Right:
 				context.Rotate (Math.PI / 2);
 				context.Translate (0, - fieldSize);
 				break;
-			case Player.Direction.Left:
+			case Direction.Left:
 				context.Rotate (3 * Math.PI / 2);
 				context.Translate (- fieldSize, 0);
 				break;
