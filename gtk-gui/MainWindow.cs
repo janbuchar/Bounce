@@ -5,6 +5,7 @@ public partial class MainWindow
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.DrawingArea canvas;
 	private global::Gtk.Statusbar statusbar1;
+	private global::Gtk.Label levelCounter;
 	private global::Gtk.Label remainingTimeCounter;
 	private global::Gtk.Label lifeCounter;
 	private global::Gtk.Label fillCounter;
@@ -31,37 +32,46 @@ public partial class MainWindow
 		this.statusbar1.Name = "statusbar1";
 		this.statusbar1.Spacing = 6;
 		// Container child statusbar1.Gtk.Box+BoxChild
+		this.levelCounter = new global::Gtk.Label ();
+		this.levelCounter.Name = "levelCounter";
+		this.levelCounter.LabelProp = global::Mono.Unix.Catalog.GetString ("label1");
+		this.statusbar1.Add (this.levelCounter);
+		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.levelCounter]));
+		w2.Position = 0;
+		w2.Expand = false;
+		w2.Fill = false;
+		// Container child statusbar1.Gtk.Box+BoxChild
 		this.remainingTimeCounter = new global::Gtk.Label ();
 		this.remainingTimeCounter.Name = "remainingTimeCounter";
 		this.remainingTimeCounter.LabelProp = global::Mono.Unix.Catalog.GetString ("label2");
 		this.statusbar1.Add (this.remainingTimeCounter);
-		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.remainingTimeCounter]));
-		w2.Position = 1;
-		w2.Expand = false;
-		w2.Fill = false;
+		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.remainingTimeCounter]));
+		w3.Position = 2;
+		w3.Expand = false;
+		w3.Fill = false;
 		// Container child statusbar1.Gtk.Box+BoxChild
 		this.lifeCounter = new global::Gtk.Label ();
 		this.lifeCounter.Name = "lifeCounter";
 		this.lifeCounter.LabelProp = global::Mono.Unix.Catalog.GetString ("label1");
 		this.statusbar1.Add (this.lifeCounter);
-		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.lifeCounter]));
-		w3.Position = 2;
-		w3.Expand = false;
-		w3.Fill = false;
+		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.lifeCounter]));
+		w4.Position = 3;
+		w4.Expand = false;
+		w4.Fill = false;
 		// Container child statusbar1.Gtk.Box+BoxChild
 		this.fillCounter = new global::Gtk.Label ();
 		this.fillCounter.Name = "fillCounter";
 		this.fillCounter.LabelProp = global::Mono.Unix.Catalog.GetString ("label2");
 		this.statusbar1.Add (this.fillCounter);
-		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.fillCounter]));
-		w4.Position = 3;
-		w4.Expand = false;
-		w4.Fill = false;
-		this.vbox1.Add (this.statusbar1);
-		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.statusbar1]));
-		w5.Position = 1;
+		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.fillCounter]));
+		w5.Position = 4;
 		w5.Expand = false;
 		w5.Fill = false;
+		this.vbox1.Add (this.statusbar1);
+		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.statusbar1]));
+		w6.Position = 1;
+		w6.Expand = false;
+		w6.Fill = false;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();

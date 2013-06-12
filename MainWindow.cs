@@ -7,6 +7,7 @@ public partial class MainWindow: Gtk.Window
 {
 	Board board;
 	Game game;
+	int level;
 
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -75,6 +76,8 @@ public partial class MainWindow: Gtk.Window
 			remainingTimeCounter.Text = string.Format ("Zbývající čas: {0} sekund", value);
 		};
 		game.Start (config);
+		level = 1;
+		updateLevelCounter();
 	}
 
 	protected void PauseGame ()
@@ -85,10 +88,17 @@ public partial class MainWindow: Gtk.Window
 
 	protected void NextLevel (Config config)
 	{
+		level += 1;
+		updateLevelCounter ();
 		config.BallCount += 1;
 		config.Lives = game.Lives + 1;
 		board.Clear ();
 		game.Start (config);
+	}
+
+	protected void updateLevelCounter ()
+	{
+		levelCounter.Text = String.Format ("Úroveň: {0}", level);
 	}
 
 	protected void OnFocusOutEvent (object sender, FocusOutEventArgs args)
