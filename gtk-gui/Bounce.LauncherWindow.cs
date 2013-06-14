@@ -12,12 +12,14 @@ namespace Bounce
 		private global::Gtk.Label heightLabel;
 		private global::Gtk.SpinButton lives;
 		private global::Gtk.Label livesLabel;
+		private global::Gtk.SpinButton monsterCount;
+		private global::Gtk.Label monsterCountLabel;
 		private global::Gtk.SpinButton timePerBall;
 		private global::Gtk.Label timePerBallLabel;
 		private global::Gtk.SpinButton width;
 		private global::Gtk.Label widthLabel;
 		private global::Gtk.Button playButton;
-		
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
@@ -30,8 +32,7 @@ namespace Bounce
 			this.vbox2.Name = "vbox2";
 			this.vbox2.Spacing = 6;
 			// Container child vbox2.Gtk.Box+BoxChild
-			this.table1 = new global::Gtk.Table (((uint)(5)), ((uint)(2)), false);
-			this.table1.Name = "table1";
+			this.table1 = new global::Gtk.Table (((uint)(6)), ((uint)(2)), false);
 			this.table1.RowSpacing = ((uint)(6));
 			this.table1.ColumnSpacing = ((uint)(6));
 			// Container child table1.Gtk.Table+TableChild
@@ -98,8 +99,8 @@ namespace Bounce
 			this.lives.Value = 5;
 			this.table1.Add (this.lives);
 			global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1 [this.lives]));
-			w5.TopAttach = ((uint)(3));
-			w5.BottomAttach = ((uint)(4));
+			w5.TopAttach = ((uint)(4));
+			w5.BottomAttach = ((uint)(5));
 			w5.LeftAttach = ((uint)(1));
 			w5.RightAttach = ((uint)(2));
 			w5.XOptions = ((global::Gtk.AttachOptions)(4));
@@ -111,10 +112,37 @@ namespace Bounce
 			this.livesLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Počet životů");
 			this.table1.Add (this.livesLabel);
 			global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1 [this.livesLabel]));
-			w6.TopAttach = ((uint)(3));
-			w6.BottomAttach = ((uint)(4));
+			w6.TopAttach = ((uint)(4));
+			w6.BottomAttach = ((uint)(5));
 			w6.XOptions = ((global::Gtk.AttachOptions)(4));
 			w6.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child table1.Gtk.Table+TableChild
+			this.monsterCount = new global::Gtk.SpinButton (0, 100, 1);
+			this.monsterCount.CanFocus = true;
+			this.monsterCount.Name = "monsterCount";
+			this.monsterCount.Adjustment.PageIncrement = 10;
+			this.monsterCount.ClimbRate = 1;
+			this.monsterCount.Numeric = true;
+			this.monsterCount.Value = 1;
+			this.table1.Add (this.monsterCount);
+			global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1 [this.monsterCount]));
+			w7.TopAttach = ((uint)(3));
+			w7.BottomAttach = ((uint)(4));
+			w7.LeftAttach = ((uint)(1));
+			w7.RightAttach = ((uint)(2));
+			w7.XOptions = ((global::Gtk.AttachOptions)(4));
+			w7.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child table1.Gtk.Table+TableChild
+			this.monsterCountLabel = new global::Gtk.Label ();
+			this.monsterCountLabel.Name = "monsterCountLabel";
+			this.monsterCountLabel.Xalign = 1F;
+			this.monsterCountLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Počet příšer");
+			this.table1.Add (this.monsterCountLabel);
+			global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.table1 [this.monsterCountLabel]));
+			w8.TopAttach = ((uint)(3));
+			w8.BottomAttach = ((uint)(4));
+			w8.XOptions = ((global::Gtk.AttachOptions)(4));
+			w8.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
 			this.timePerBall = new global::Gtk.SpinButton (0, 100, 1);
 			this.timePerBall.CanFocus = true;
@@ -124,24 +152,24 @@ namespace Bounce
 			this.timePerBall.Numeric = true;
 			this.timePerBall.Value = 30;
 			this.table1.Add (this.timePerBall);
-			global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1 [this.timePerBall]));
-			w7.TopAttach = ((uint)(4));
-			w7.BottomAttach = ((uint)(5));
-			w7.LeftAttach = ((uint)(1));
-			w7.RightAttach = ((uint)(2));
-			w7.XOptions = ((global::Gtk.AttachOptions)(4));
-			w7.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.table1 [this.timePerBall]));
+			w9.TopAttach = ((uint)(5));
+			w9.BottomAttach = ((uint)(6));
+			w9.LeftAttach = ((uint)(1));
+			w9.RightAttach = ((uint)(2));
+			w9.XOptions = ((global::Gtk.AttachOptions)(4));
+			w9.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
 			this.timePerBallLabel = new global::Gtk.Label ();
 			this.timePerBallLabel.Name = "timePerBallLabel";
 			this.timePerBallLabel.Xalign = 1F;
 			this.timePerBallLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Čas na jednu kouli");
 			this.table1.Add (this.timePerBallLabel);
-			global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.table1 [this.timePerBallLabel]));
-			w8.TopAttach = ((uint)(4));
-			w8.BottomAttach = ((uint)(5));
-			w8.XOptions = ((global::Gtk.AttachOptions)(4));
-			w8.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w10 = ((global::Gtk.Table.TableChild)(this.table1 [this.timePerBallLabel]));
+			w10.TopAttach = ((uint)(5));
+			w10.BottomAttach = ((uint)(6));
+			w10.XOptions = ((global::Gtk.AttachOptions)(4));
+			w10.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
 			this.width = new global::Gtk.SpinButton (0, 100, 1);
 			this.width.CanFocus = true;
@@ -151,24 +179,24 @@ namespace Bounce
 			this.width.Numeric = true;
 			this.width.Value = 30;
 			this.table1.Add (this.width);
-			global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.table1 [this.width]));
-			w9.LeftAttach = ((uint)(1));
-			w9.RightAttach = ((uint)(2));
-			w9.XOptions = ((global::Gtk.AttachOptions)(4));
-			w9.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w11 = ((global::Gtk.Table.TableChild)(this.table1 [this.width]));
+			w11.LeftAttach = ((uint)(1));
+			w11.RightAttach = ((uint)(2));
+			w11.XOptions = ((global::Gtk.AttachOptions)(4));
+			w11.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
 			this.widthLabel = new global::Gtk.Label ();
 			this.widthLabel.Name = "widthLabel";
 			this.widthLabel.Xalign = 1F;
 			this.widthLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Šířka hrací plochy");
 			this.table1.Add (this.widthLabel);
-			global::Gtk.Table.TableChild w10 = ((global::Gtk.Table.TableChild)(this.table1 [this.widthLabel]));
-			w10.XOptions = ((global::Gtk.AttachOptions)(4));
-			w10.YOptions = ((global::Gtk.AttachOptions)(4));
+			global::Gtk.Table.TableChild w12 = ((global::Gtk.Table.TableChild)(this.table1 [this.widthLabel]));
+			w12.XOptions = ((global::Gtk.AttachOptions)(4));
+			w12.YOptions = ((global::Gtk.AttachOptions)(4));
 			this.vbox2.Add (this.table1);
-			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.table1]));
-			w11.Position = 0;
-			w11.Fill = false;
+			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.table1]));
+			w13.Position = 0;
+			w13.Fill = false;
 			// Container child vbox2.Gtk.Box+BoxChild
 			this.playButton = new global::Gtk.Button ();
 			this.playButton.CanFocus = true;
@@ -176,10 +204,10 @@ namespace Bounce
 			this.playButton.UseUnderline = true;
 			this.playButton.Label = global::Mono.Unix.Catalog.GetString ("Hrát");
 			this.vbox2.Add (this.playButton);
-			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.playButton]));
-			w12.Position = 1;
-			w12.Expand = false;
-			w12.Fill = false;
+			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.playButton]));
+			w14.Position = 1;
+			w14.Expand = false;
+			w14.Fill = false;
 			this.Add (this.vbox2);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

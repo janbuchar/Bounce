@@ -20,6 +20,7 @@ namespace Bounce
 	{
 		protected Player player = new Player (0, 0);
 		protected List<Ball> balls = new List<Ball> ();
+		protected List<Monster> monsters = new List<Monster> ();
 		private Field[,] fields;
 		int fieldSize;
 		BoardRenderer renderer;
@@ -51,6 +52,7 @@ namespace Bounce
 		{
 			player = new Player (0, 0);
 			balls = new List<Ball> ();
+			monsters = new List<Monster> ();
 			fields = new Field[Width, Height];
 			for (int i = 0; i < Width; i++) {
 				for (int j = 0; j < Height; j++) {
@@ -69,12 +71,18 @@ namespace Bounce
 
 		public void Render ()
 		{
-			renderer.Render (player, balls);
+			renderer.Render (player, balls, monsters);
 		}
 
 		public void AddBall (int x, int y, int dX, int dY)
 		{
 			balls.Add (new Ball(x * fieldSize, y * fieldSize, dX, dY));
+		}
+
+		public void AddMonster (string type, int x, int y)
+		{
+			MonsterStrategy strategy = (MonsterStrategy)Activator.CreateInstance (Type.GetType("Bounce." + type));
+			monsters.Add (new Monster(strategy, type, x * fieldSize, y * fieldSize));
 		}
 
 		public void Fill (int x, int y)
@@ -212,8 +220,19 @@ namespace Bounce
 				}
 			}
 
+			foreach (Monster monster in monsters) {
+				if (monster.Remaining == 0) {
+					Field field = crossedField (monster.X, monster.Y);
+					monster.StartMove (new NeighbourMap(field, getNeighbours(field)));
+					monster.Move (checkedSpriteDistance(monster, 5));
+					monster.Stop (checkedSpriteDistance(monster, calculateResidualSteps(monster)));
+				} else {
+					monster.Move (Math.Min (5, monster.Remaining));
+				}
+			}
+
 			if (player.Moving) {
-				int steps = checkedPlayerDistance (5);
+				int steps = checkedSpriteDistance (player, 5);
 				player.Move (steps);
 				if (steps == 0) {
 					player.Stop (0);
@@ -241,37 +260,37 @@ namespace Bounce
 			return fields [x / fieldSize, y / fieldSize];
 		}
 
-		public int checkedPlayerDistance (int steps)
+		public int checkedSpriteDistance (Sprite sprite, int steps)
 		{
 			int max = 0;
-			switch (player.direction) {
+			switch (sprite.Direction) {
 			case Direction.Down:
-				max = Height * fieldSize - (player.Y + fieldSize);
+				max = Height * fieldSize - (sprite.Y + fieldSize);
 				break;
 			case Direction.Up:
-				max = player.Y;
+				max = sprite.Y;
 				break;
 			case Direction.Right:
-				max = Width * fieldSize - (player.X + fieldSize);
+				max = Width * fieldSize - (sprite.X + fieldSize);
 				break;
 			case Direction.Left:
-				max = player.X;
+				max = sprite.X;
 				break;
 			}
 			return Math.Min (steps, max);
 		}
 
-		public int calculateResidualSteps ()
+		public int calculateResidualSteps (Sprite sprite)
 		{
-			switch (player.direction) {
+			switch (sprite.Direction) {
 			case Direction.Up:
-				return player.Y % fieldSize;
+				return sprite.Y % fieldSize;
 			case Direction.Down:
-				return fieldSize - player.Y % fieldSize;
+				return fieldSize - sprite.Y % fieldSize;
 			case Direction.Right:
-				return fieldSize - player.X % fieldSize;
+				return fieldSize - sprite.X % fieldSize;
 			case Direction.Left:
-				return player.X % fieldSize;
+				return sprite.X % fieldSize;
 			default:
 				return 0;
 			}
@@ -283,7 +302,7 @@ namespace Bounce
 				player.StartMove (direction);
 			} else {
 				if (player.Moving) {
-					StopPlayer (player.direction);
+					StopPlayer (player.Direction);
 				}
 				player.SteeringDirection = direction;
 			}
@@ -292,11 +311,58 @@ namespace Bounce
 		public void StopPlayer (Direction direction)
 		{
 			if (direction != Direction.None) {
-				if (direction == player.direction) {
-					player.Stop (checkedPlayerDistance(calculateResidualSteps()));
+				if (direction == player.Direction) {
+					player.Stop (checkedSpriteDistance(player, calculateResidualSteps(player)));
 				}
 				if (direction == player.SteeringDirection) {
 					player.SteeringDirection = Direction.None;
+				}
+			}
+		}
+	}
+
+	public class NeighbourMap
+	{
+		public Field Currrent {
+			get;
+			protected set;
+		}
+
+		public Field Left {
+			get;
+			protected set;
+		}
+
+		public Field Up {
+			get;
+			protected set;
+		}
+
+		public Field Right {
+			get;
+			protected set;
+		}
+
+		public Field Down {
+			get;
+			protected set;
+		}
+
+		public NeighbourMap (Field current, IEnumerable<Field> neighbours)
+		{
+			this.Currrent = current;
+			foreach (Field neighbour in neighbours) {
+				if (neighbour.X == current.X - 1) {
+					Left = neighbour;
+				}
+				if (neighbour.X == current.X + 1) {
+					Right = neighbour;
+				}
+				if (neighbour.Y == current.Y - 1) {
+					Up = neighbour;
+				}
+				if (neighbour.Y == current.Y + 1) {
+					Down = neighbour;
 				}
 			}
 		}

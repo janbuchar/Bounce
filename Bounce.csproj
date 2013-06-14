@@ -72,9 +72,14 @@
     <Compile Include="LauncherWindow.cs" />
     <Compile Include="gtk-gui\Bounce.LauncherWindow.cs" />
     <Compile Include="BoardRenderer.cs" />
+    <Compile Include="Direction.cs" />
+    <Compile Include="Monsters\Wanderer.cs" />
+    <Compile Include="Monsters\MonsterStrategy.cs" />
+    <Compile Include="Monster.cs" />
+    <Compile Include="Sprite.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Creatures\" />
+    <Folder Include="Monsters\" />
   </ItemGroup>
 </Project>

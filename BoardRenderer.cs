@@ -19,7 +19,7 @@ namespace Bounce
 			this.fieldSize = fieldSize;
 		}
 
-		public void Render (Player player, List<Ball> balls)
+		public void Render (Player player, List<Ball> balls, List<Monster> monsters)
 		{
 			Gdk.Window canvas = area.GdkWindow;
 			if (canvas != null) {
@@ -35,6 +35,11 @@ namespace Bounce
 					foreach (Ball ball in balls) {
 						context.SetSourceRGB (1, 0, 0);		
 						paintCircle (context, ball.X, ball.Y);
+					}
+
+					foreach (Monster monster in monsters) {
+						context.SetSourceRGB (1, 1, 0);
+						paintCircle (context, monster.X, monster.Y);
 					}
 
 					context.SetSourceRGB (0, 0, 1);
@@ -141,7 +146,7 @@ namespace Bounce
 		{
 			context.Save ();
 			context.Translate (player.X, player.Y);
-			switch (player.direction) {
+			switch (player.Direction) {
 			case Direction.Down:
 				context.Rotate (Math.PI);
 				context.Translate (- fieldSize, - fieldSize);

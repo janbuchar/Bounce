@@ -81,7 +81,10 @@ namespace Bounce
 			for (int i = 0; i < config.BallCount; i++) {
 				spawnBall ();
 			}
-			
+			for (int i = 0; i < config.MonsterCount; i++) {
+				spawnMonster ();
+			}
+
 			startRenderTimeout ();
 			
 			limit = config.TimePerBall * config.BallCount;
@@ -160,17 +163,26 @@ namespace Bounce
 				(int)Math.Pow (-1, random.Next (0, 2))
 			);
 		}
+
+		protected void spawnMonster ()
+		{
+			string[] types = new string[] {
+				"Wanderer"
+			};
+			board.AddMonster (types[random.Next(0, types.Length)], board.Width - 1, board.Height - 1);
+		}
 	}
 
 	public class Config
 	{
-		public int Width, Height, BallCount, Lives, TimePerBall;
+		public int Width, Height, BallCount, MonsterCount, Lives, TimePerBall;
 
-		public Config (int Width = 0, int Height = 0, int BallCount = 0, int Lives = 0, int TimePerBall = 0)
+		public Config (int Width = 0, int Height = 0, int BallCount = 0, int MonsterCount = 0, int Lives = 0, int TimePerBall = 0)
 		{
 			this.Width = Width;
 			this.Height = Height;
 			this.BallCount = BallCount;
+			this.MonsterCount = MonsterCount;
 			this.Lives = Lives;
 			this.TimePerBall = TimePerBall;
 		}
