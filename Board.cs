@@ -323,7 +323,7 @@ namespace Bounce
 
 	public class NeighbourMap
 	{
-		public Field Currrent {
+		public Field Current {
 			get;
 			protected set;
 		}
@@ -350,7 +350,7 @@ namespace Bounce
 
 		public NeighbourMap (Field current, IEnumerable<Field> neighbours)
 		{
-			this.Currrent = current;
+			this.Current = current;
 			foreach (Field neighbour in neighbours) {
 				if (neighbour.X == current.X - 1) {
 					Left = neighbour;
