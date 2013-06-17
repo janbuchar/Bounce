@@ -91,6 +91,9 @@ public partial class MainWindow: Gtk.Window
 		level += 1;
 		updateLevelCounter ();
 		config.BallCount += 1;
+		if (level % 2 == 0) {
+			config.MonsterCount += 1;
+		}
 		config.Lives = game.Lives + 1;
 		board.Clear ();
 		game.Start (config);
