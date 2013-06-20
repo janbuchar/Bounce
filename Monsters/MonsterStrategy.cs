@@ -5,7 +5,7 @@ namespace Bounce
 {
 	public interface MonsterStrategy
 	{
-		Direction Move (NeighbourMap map);
+		Direction Move (NeighbourMap map, Board board);
 	}
 }
 

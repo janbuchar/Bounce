@@ -6,7 +6,7 @@ namespace Bounce
 	{
 		Direction direction = Direction.None;
 
-		public Direction Move (NeighbourMap map)
+		public Direction Move (NeighbourMap map, Board board)
 		{
 			if (direction == Direction.None && !checkPath (map)) {
 				turnAnywhere (map);

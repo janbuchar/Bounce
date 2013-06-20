@@ -7,7 +7,7 @@ namespace Bounce
 	{
 		Random random = new Random ();
 
-		public Direction Move (NeighbourMap map)
+		public Direction Move (NeighbourMap map, Board board)
 		{
 			switch (random.Next (1, 6)) {
 			case 1:

@@ -17,9 +17,9 @@ namespace Bounce
 			this.strategy = strategy;
 		}
 
-		public void StartMove (NeighbourMap map)
+		public void StartMove (NeighbourMap map, Board board)
 		{
-			StartMove (strategy.Move (map));
+			StartMove (strategy.Move (map, board));
 		}
 	}
 }

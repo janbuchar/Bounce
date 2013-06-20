@@ -228,7 +228,7 @@ namespace Bounce
 			foreach (Monster monster in monsters) {
 				if (monster.Remaining == 0) {
 					Field field = crossedField (monster.X, monster.Y);
-					monster.StartMove (new NeighbourMap(field, getNeighbours(field)));
+					monster.StartMove (new NeighbourMap(field, getNeighbours(field)), this);
 					monster.Move (checkedSpriteDistance(monster, 5));
 					monster.Stop (checkedSpriteDistance(monster, calculateResidualSteps(monster)));
 				} else {
