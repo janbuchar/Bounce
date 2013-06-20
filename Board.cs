@@ -18,7 +18,6 @@ namespace Bounce
 	public delegate void PlayerCollisionHandler (object sender, EventArgs e);
 	public class Board
 	{
-		protected Player player = new Player (0, 0);
 		protected List<Ball> balls = new List<Ball> ();
 		protected List<Monster> monsters = new List<Monster> ();
 		private Field[,] fields;
@@ -29,6 +28,11 @@ namespace Bounce
 			set {
 				renderer.RenderOverlay (value);
 			}
+		}
+
+		public Player Player {
+			get;
+			protected set;
 		}
 
 		public int Width { get; protected set; }
@@ -43,6 +47,7 @@ namespace Bounce
 			this.renderer = renderer;
 			this.Width = width;
 			this.Height = height;
+			this.Player = new Player (0, 0);
 			this.Clear ();
 			this.fieldSize = fieldSize;
 			renderer.RefreshBackground (fields);
@@ -50,7 +55,7 @@ namespace Bounce
 
 		public void Clear ()
 		{
-			player = new Player (0, 0);
+			Player = new Player (0, 0);
 			balls = new List<Ball> ();
 			monsters = new List<Monster> ();
 			fields = new Field[Width, Height];
@@ -71,7 +76,7 @@ namespace Bounce
 
 		public void Render ()
 		{
-			renderer.Render (player, balls, monsters);
+			renderer.Render (Player, balls, monsters);
 		}
 
 		public void AddBall (int x, int y, int dX, int dY)
@@ -98,8 +103,8 @@ namespace Bounce
 			foreach (Ball ball in balls) {
 				ballMap.Add (crossedField (ball.X, ball.Y));
 			}
-			while (player.Trail.Count > 0) {
-				player.Trail.Dequeue ().Full = true;
+			while (Player.Trail.Count > 0) {
+				Player.Trail.Dequeue ().Full = true;
 				filled += 1;
 			}
 			bool[,] visited = new bool[Width, Height]; 
@@ -210,9 +215,9 @@ namespace Bounce
 					}
 					ball.X += ball.dX;
 					ball.Y += ball.dY;	
-					if (player.Trail.Contains (crossedField(ball.X, ball.Y))) {
-						player.Trail.Clear ();
-						player.Place (player.BaseField.X * fieldSize, player.BaseField.Y * fieldSize);
+					if (Player.Trail.Contains (crossedField(ball.X, ball.Y))) {
+						Player.Trail.Clear ();
+						Player.Place (Player.BaseField.X * fieldSize, Player.BaseField.Y * fieldSize);
 						if (PlayerCollision != null) {
 							PlayerCollision (this, EventArgs.Empty);
 						}
@@ -231,27 +236,27 @@ namespace Bounce
 				}
 			}
 
-			if (player.Moving) {
-				int steps = checkedSpriteDistance (player, 5);
-				player.Move (steps);
+			if (Player.Moving) {
+				int steps = checkedSpriteDistance (Player, 5);
+				Player.Move (steps);
 				if (steps == 0) {
-					player.Stop (0);
+					Player.Stop (0);
 				}
 			}
-			if (player.Remaining > 0) {
-				player.Move (Math.Min (5, player.Remaining));
-				if (player.Remaining == 0 && player.SteeringDirection != Direction.None) {
-					player.Steer ();
+			if (Player.Remaining > 0) {
+				Player.Move (Math.Min (5, Player.Remaining));
+				if (Player.Remaining == 0 && Player.SteeringDirection != Direction.None) {
+					Player.Steer ();
 				}
 			}
-			Field playerField = crossedField (player.X, player.Y);
-			if (!playerField.Full && !player.Trail.Contains (playerField)) {
-				player.Trail.Enqueue (playerField);
+			Field playerField = crossedField (Player.X, Player.Y);
+			if (!playerField.Full && !Player.Trail.Contains (playerField)) {
+				Player.Trail.Enqueue (playerField);
 			} else if (playerField.Full) {
-				if (player.Trail.Count > 0) {
+				if (Player.Trail.Count > 0) {
 					closeTrail ();
 				}
-				player.BaseField = playerField;
+				Player.BaseField = playerField;
 			}
 		}
 
@@ -298,24 +303,24 @@ namespace Bounce
 
 		public void MovePlayer (Direction direction)
 		{
-			if (!player.Moving && player.Remaining == 0) {
-				player.StartMove (direction);
+			if (!Player.Moving && Player.Remaining == 0) {
+				Player.StartMove (direction);
 			} else {
-				if (player.Moving) {
-					StopPlayer (player.Direction);
+				if (Player.Moving) {
+					StopPlayer (Player.Direction);
 				}
-				player.SteeringDirection = direction;
+				Player.SteeringDirection = direction;
 			}
 		}
 
 		public void StopPlayer (Direction direction)
 		{
 			if (direction != Direction.None) {
-				if (direction == player.Direction) {
-					player.Stop (checkedSpriteDistance(player, calculateResidualSteps(player)));
+				if (direction == Player.Direction) {
+					Player.Stop (checkedSpriteDistance(Player, calculateResidualSteps(Player)));
 				}
-				if (direction == player.SteeringDirection) {
-					player.SteeringDirection = Direction.None;
+				if (direction == Player.SteeringDirection) {
+					Player.SteeringDirection = Direction.None;
 				}
 			}
 		}
