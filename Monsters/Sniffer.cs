@@ -75,9 +75,9 @@ namespace Bounce
 			} else if (from.X < to.X) {
 				return Direction.Right;
 			} else if (from.Y > to.Y) {
-				return Direction.Down;
-			} else if (from.Y < to.Y) {
 				return Direction.Up;
+			} else if (from.Y < to.Y) {
+				return Direction.Down;
 			}
 			return Direction.None;
 		}
