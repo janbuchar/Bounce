@@ -42,7 +42,7 @@ namespace Bounce
 					break;
 				}
 				foreach (Field neighbour in board.GetNeighbours(field)) {
-					if (record [neighbour.X, neighbour.Y] == -1) {
+					if (neighbour.Full && record [neighbour.X, neighbour.Y] == -1) {
 						record [neighbour.X, neighbour.Y] = record [field.X, field.Y] + 1;
 						queue.Enqueue (neighbour);
 					}
