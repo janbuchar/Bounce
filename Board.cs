@@ -162,7 +162,7 @@ namespace Bounce
 					if (ballMap.Contains (field)) {
 						containsBall = true;
 					}
-					foreach (Field neighbour in getNeighbours(field)) {
+					foreach (Field neighbour in GetNeighbours(field)) {
 						if (!neighbour.Full && !visited [neighbour.X, neighbour.Y]) {
 							result.Add (neighbour);
 							queue.Enqueue (neighbour);
@@ -177,7 +177,7 @@ namespace Bounce
 			return result;
 		}
 
-		protected IEnumerable<Field> getNeighbours (Field field)
+		public IEnumerable<Field> GetNeighbours (Field field)
 		{
 			if (field.X > 0) {
 				yield return fields [field.X - 1, field.Y];
@@ -228,7 +228,7 @@ namespace Bounce
 			foreach (Monster monster in monsters) {
 				if (monster.Remaining == 0) {
 					Field field = crossedField (monster.X, monster.Y);
-					monster.StartMove (new NeighbourMap(field, getNeighbours(field)), this);
+					monster.StartMove (new NeighbourMap(field, GetNeighbours(field)), this);
 					monster.Move (checkedSpriteDistance(monster, 5));
 					monster.Stop (checkedSpriteDistance(monster, calculateResidualSteps(monster)));
 				} else {
