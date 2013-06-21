@@ -297,7 +297,7 @@ namespace Bounce
 			case Direction.Left:
 				return sprite.X % fieldSize;
 			default:
-				return 0;
+				return fieldSize;
 			}
 		}
 
