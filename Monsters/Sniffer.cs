@@ -5,7 +5,7 @@ namespace Bounce
 {
 	public class Sniffer : MonsterStrategy
 	{
-		const double moveRateStep = 0.9;
+		const double moveRateStep = 0.95;
 		double moveRate = 0;
 		Random random = new Random ();
 		Stack<Field> path;
@@ -16,8 +16,9 @@ namespace Bounce
 				moveRate *= moveRateStep;
 			} else {
 				sniff (map, board);
+				return Direction.None;
 			}
-			return track (map);
+			return getDirection (map.Current, path.Pop ());
 		}
 
 		protected void sniff (NeighbourMap map, Board board)
@@ -61,11 +62,6 @@ namespace Bounce
 					}
 				}
 			}
-		}
-
-		protected Direction track (NeighbourMap map)
-		{
-			return getDirection (map.Current, path.Pop ());
 		}
 
 		protected Direction getDirection (Field from, Field to)
