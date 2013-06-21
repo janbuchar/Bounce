@@ -168,7 +168,8 @@ namespace Bounce
 		{
 			string[] types = new string[] {
 				"Wanderer",
-				"Circulator"
+				"Circulator",
+				"Sniffer"
 			};
 			board.AddMonster (types[random.Next(0, types.Length)], board.Width - 1, board.Height - 1);
 		}
