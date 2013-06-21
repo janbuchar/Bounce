@@ -47,7 +47,6 @@ namespace Bounce
 			this.renderer = renderer;
 			this.Width = width;
 			this.Height = height;
-			this.Player = new Player (0, 0);
 			this.Clear ();
 			this.fieldSize = fieldSize;
 			renderer.RefreshBackground (fields);
