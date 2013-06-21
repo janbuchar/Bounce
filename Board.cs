@@ -54,7 +54,6 @@ namespace Bounce
 
 		public void Clear ()
 		{
-			Player = new Player (0, 0);
 			balls = new List<Ball> ();
 			monsters = new List<Monster> ();
 			fields = new Field[Width, Height];
@@ -70,6 +69,8 @@ namespace Bounce
 					fields [i, j].Y = j;
 				}
 			}
+			Player = new Player (0, 0);
+			Player.BaseField = fields [0, 0];
 			renderer.RefreshBackground (fields);
 		}
 
