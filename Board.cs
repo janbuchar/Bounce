@@ -22,6 +22,7 @@ namespace Bounce
 		protected List<Monster> monsters = new List<Monster> ();
 		private Field[,] fields;
 		int fieldSize;
+		const int hitLimit = 1000;
 		BoardRenderer renderer;
 
 		public string OverlayText {
@@ -81,13 +82,13 @@ namespace Bounce
 
 		public void AddBall (int x, int y, int dX, int dY)
 		{
-			balls.Add (new Ball(x * fieldSize, y * fieldSize, dX, dY));
+			balls.Add (new Ball (x * fieldSize, y * fieldSize, dX, dY));
 		}
 
 		public void AddMonster (string type, int x, int y)
 		{
-			MonsterStrategy strategy = (MonsterStrategy)Activator.CreateInstance (Type.GetType("Bounce." + type));
-			monsters.Add (new Monster(strategy, type, x * fieldSize, y * fieldSize));
+			MonsterStrategy strategy = (MonsterStrategy)Activator.CreateInstance (Type.GetType ("Bounce." + type));
+			monsters.Add (new Monster (strategy, type, x * fieldSize, y * fieldSize));
 		}
 
 		public void Fill (int x, int y)
@@ -215,9 +216,10 @@ namespace Bounce
 					}
 					ball.X += ball.dX;
 					ball.Y += ball.dY;	
-					if (Player.Trail.Contains (crossedField(ball.X, ball.Y))) {
+					if (Player.Trail.Contains (crossedField (ball.X, ball.Y))) {
 						Player.Trail.Clear ();
 						Player.Place (Player.BaseField.X * fieldSize, Player.BaseField.Y * fieldSize);
+						Player.HitTime = DateTime.Now;
 						if (PlayerCollision != null) {
 							PlayerCollision (this, EventArgs.Empty);
 						}
@@ -226,13 +228,19 @@ namespace Bounce
 			}
 
 			foreach (Monster monster in monsters) {
+				Field field = crossedField (monster.X, monster.Y);
 				if (monster.Remaining == 0) {
-					Field field = crossedField (monster.X, monster.Y);
-					monster.StartMove (new NeighbourMap(field, GetNeighbours(field)), this);
-					monster.Move (checkedSpriteDistance(monster, 5));
-					monster.Stop (checkedSpriteDistance(monster, calculateResidualSteps(monster)));
+					monster.StartMove (new NeighbourMap (field, GetNeighbours (field)), this);
+					monster.Move (checkedSpriteDistance (monster, 5));
+					monster.Stop (checkedSpriteDistance (monster, calculateResidualSteps (monster)));
 				} else {
 					monster.Move (Math.Min (5, monster.Remaining));
+				}
+				if (field == crossedField (Player.X, Player.Y) && (DateTime.Now - Player.HitTime).TotalMilliseconds > hitLimit) {
+					Player.HitTime = DateTime.Now;
+					if (PlayerCollision != null) {
+						PlayerCollision (this, EventArgs.Empty);
+					}
 				}
 			}
 
@@ -317,7 +325,7 @@ namespace Bounce
 		{
 			if (direction != Direction.None) {
 				if (direction == Player.Direction) {
-					Player.Stop (checkedSpriteDistance(Player, calculateResidualSteps(Player)));
+					Player.Stop (checkedSpriteDistance (Player, calculateResidualSteps (Player)));
 				}
 				if (direction == Player.SteeringDirection) {
 					Player.SteeringDirection = Direction.None;
