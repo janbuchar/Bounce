@@ -87,27 +87,23 @@ namespace Bounce
 
 		public void AddMonster (string type)
 		{
-			int[,] record = new int [Width, Height];
+			double[,] record = new double [Width, Height];
 			Field playerField = crossedField (Player.X, Player.Y);
+			record [playerField.X, playerField.Y] = -1;
 			for (int i = 0; i < Width; i++) {
 				for (int j = 0; j < Height; j++) {
-					if (fields [i, j].Full) {
-						record [i, j] = monsters.Count * Math.Abs (i - playerField.X) + Math.Abs (j - playerField.Y);
-					}
-				}
-			}
-			foreach (Monster monster in monsters) {
-				Field monsterField = crossedField (monster.X, monster.Y);
-				for (int i = 0; i < Width; i++) {
-					for (int j = 0; j < Height; j++) {
-						if (fields [i, j].Full) {
-							record [i, j] += Math.Abs (i - monsterField.X) + Math.Abs (j - monsterField.Y);
+					if (fields [i, j].Full && record [i, j] != -1) {
+						record [i, j] = (monsters.Count + 1) * Math.Sqrt (Math.Pow (i - playerField.X, 2) + Math.Pow (j - playerField.Y, 2));
+						foreach (Monster monster in monsters) {
+							Field monsterField = crossedField (monster.X, monster.Y);
+							record [monsterField.X, monsterField.Y] = -1;
+							record [i, j] += Math.Sqrt (Math.Pow (i - monsterField.X, 2) + Math.Pow (j - monsterField.Y, 2));
 						}
 					}
 				}
 			}
 			Field field = null;
-			int maxRank = -1;
+			double maxRank = -1;
 			for (int i = 0; i < Width; i++) {
 				for (int j = 0; j < Height; j++) {
 					if (record [i, j] > maxRank) {
