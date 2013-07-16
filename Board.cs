@@ -85,10 +85,39 @@ namespace Bounce
 			balls.Add (new Ball (x * fieldSize, y * fieldSize, dX, dY));
 		}
 
-		public void AddMonster (string type, int x, int y)
+		public void AddMonster (string type)
 		{
+			int[,] record = new int [Width, Height];
+			Field playerField = crossedField (Player.X, Player.Y);
+			for (int i = 0; i < Width; i++) {
+				for (int j = 0; j < Height; j++) {
+					if (fields [i, j].Full) {
+						record [i, j] = monsters.Count * Math.Abs (i - playerField.X) + Math.Abs (j - playerField.Y);
+					}
+				}
+			}
+			foreach (Monster monster in monsters) {
+				Field monsterField = crossedField (monster.X, monster.Y);
+				for (int i = 0; i < Width; i++) {
+					for (int j = 0; j < Height; j++) {
+						if (fields [i, j].Full) {
+							record [i, j] += Math.Abs (i - monsterField.X) + Math.Abs (j - monsterField.Y);
+						}
+					}
+				}
+			}
+			Field field = null;
+			int maxRank = -1;
+			for (int i = 0; i < Width; i++) {
+				for (int j = 0; j < Height; j++) {
+					if (record [i, j] > maxRank) {
+						field = fields [i, j];
+						maxRank = record [i, j];
+					}
+				}
+			}
 			MonsterStrategy strategy = (MonsterStrategy)Activator.CreateInstance (Type.GetType ("Bounce." + type));
-			monsters.Add (new Monster (strategy, type, x * fieldSize, y * fieldSize));
+			monsters.Add (new Monster (strategy, type, field.X * fieldSize, field.Y * fieldSize));
 		}
 
 		public void Fill (int x, int y)

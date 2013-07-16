@@ -171,7 +171,7 @@ namespace Bounce
 				"Circulator",
 				"Sniffer"
 			};
-			board.AddMonster (types [random.Next (0, types.Length)], board.Width - 1, board.Height - 1);
+			board.AddMonster (types [random.Next (0, types.Length)]);
 		}
 	}
 
