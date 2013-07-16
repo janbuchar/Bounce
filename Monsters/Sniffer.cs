@@ -7,6 +7,7 @@ namespace Bounce
 	{
 		const double moveRateStep = 0.95;
 		double moveRate = 0;
+		int wait = 0;
 		Random random = new Random ();
 		Stack<Field> path;
 
@@ -15,7 +16,12 @@ namespace Bounce
 			if (moveRate > 0 && path.Count > 0 && random.NextDouble () < moveRate) {
 				moveRate *= moveRateStep;
 			} else {
-				sniff (map, board);
+				if (wait == 0) {
+					sniff (map, board);
+					wait = 30;
+				} else {
+					wait -= 1;
+				}
 				return Direction.None;
 			}
 			return getDirection (map.Current, path.Pop ());
