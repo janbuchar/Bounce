@@ -24,7 +24,7 @@ namespace Bounce
 			Gdk.Window canvas = area.GdkWindow;
 			if (canvas != null) {
 				using (Cairo.Context context = Gdk.CairoHelper.Create (canvas)) {
-					canvas.BeginPaintRegion (new Gdk.Region());
+					canvas.BeginPaintRegion (new Gdk.Region ());
 					context.SetSourceSurface (background, 0, 0);
 					context.Paint ();
 
@@ -38,8 +38,7 @@ namespace Bounce
 					}
 
 					foreach (Monster monster in monsters) {
-						context.SetSourceRGB (1, 1, 0);
-						paintCircle (context, monster.X, monster.Y);
+						paintMonster (context, monster);
 					}
 
 					context.SetSourceRGB (0, 0, 1);
@@ -142,11 +141,9 @@ namespace Bounce
 			context.NewPath ();
 		}
 
-		protected void paintPlayer (Cairo.Context context, Player player)
+		protected void rotateContext (Cairo.Context context, Direction direction)
 		{
-			context.Save ();
-			context.Translate (player.X, player.Y);
-			switch (player.Direction) {
+			switch (direction) {
 			case Direction.Down:
 				context.Rotate (Math.PI);
 				context.Translate (- fieldSize, - fieldSize);
@@ -160,14 +157,92 @@ namespace Bounce
 				context.Translate (- fieldSize, 0);
 				break;
 			}
+		}
+
+		protected void paintArrow (Cairo.Context context, Direction direction, int x, int y)
+		{
+			context.Save ();
+			context.Translate (x, y);
+			rotateContext (context, direction);
 			context.MoveTo (fieldSize / 2, 0);
 			context.LineTo (fieldSize, fieldSize);
 			context.LineTo (fieldSize / 2, 3 * fieldSize / 4);
 			context.LineTo (0, fieldSize);
 			context.LineTo (fieldSize / 2, 0);
-			context.SetSourceRGB (0, 0, 1);
 			context.FillPreserve ();
 			context.NewPath ();
+			context.Restore ();
+		}
+
+		protected void paintPlayer (Cairo.Context context, Player player)
+		{
+			context.SetSourceRGB (0, 0, 1);
+			paintArrow (context, player.Direction, player.X, player.Y);
+		}
+
+		protected void paintMonster (Cairo.Context context, Monster monster)
+		{
+			switch (monster.Type) {
+			case "Wanderer":
+				context.SetSourceRGB (0, 1, 0);
+				paintWanderer (context, monster);
+				break;
+			case "Sniffer":
+				context.SetSourceRGB (1, 0, 1);
+				paintSniffer (context, monster);
+				break;
+			case "Circulator":
+				context.SetSourceRGB (0, 0, 0);
+				paintCirculator (context, monster);
+				break;
+			default:
+				context.SetSourceRGB (1, 1, 0);
+				paintCircle (context, monster.X, monster.Y);
+				break;
+			}
+		}
+
+		protected void paintCirculator (Cairo.Context context, Monster monster)
+		{
+			paintArrow (context, monster.Direction, monster.X, monster.Y);
+		}
+
+		protected void paintSniffer (Cairo.Context context, Monster monster)
+		{
+			context.Save ();
+			context.Translate (monster.X, monster.Y);
+			rotateContext (context, monster.Direction);
+			context.Arc (fieldSize / 2, fieldSize / 2, fieldSize / 3, 0, 2 * Math.PI);
+			context.FillPreserve ();
+			context.MoveTo (0, 0);
+			context.LineTo (fieldSize, fieldSize);
+			context.Stroke ();
+			context.NewPath ();
+			context.MoveTo (fieldSize, 0);
+			context.LineTo (0, fieldSize);
+			context.Stroke ();
+			context.NewPath ();
+			context.MoveTo (0, fieldSize / 2);
+			context.LineTo (fieldSize, fieldSize / 2);
+			context.Stroke ();
+			context.NewPath ();
+			context.Restore ();
+		}
+
+		protected void paintWanderer (Cairo.Context context, Monster monster)
+		{
+			context.Save ();
+			context.Translate (monster.X + fieldSize / 2, monster.Y + fieldSize / 2);
+
+			for (int i = 0; i < 12; i++) {
+				context.LineTo ((fieldSize / 2) * Math.Cos (i * Math.PI / 6), (fieldSize / 2) * Math.Sin (i * Math.PI / 6));
+				context.LineTo ((fieldSize / 3) * Math.Cos (Math.PI / 12 + i * Math.PI / 6), (fieldSize / 3) * Math.Sin (Math.PI / 12 + i * Math.PI / 6));
+			}
+
+			context.ClosePath ();
+			context.FillPreserve ();
+			context.NewPath ();
+
 			context.Restore ();
 		}
 	}
