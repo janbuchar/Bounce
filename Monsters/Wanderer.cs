@@ -9,29 +9,27 @@ namespace Bounce
 
 		public Direction Move (NeighbourMap map, Board board)
 		{
-			switch (random.Next (1, 6)) {
-			case 1:
-				if (map.Down != null && map.Down.Full) {
-					return Direction.Down;
-				}
-				break;
-			case 2:
-				if (map.Left != null && map.Left.Full) {
-					return Direction.Left;
-				}
-				break;
-			case 3:
-				if (map.Right != null && map.Right.Full) {
-					return Direction.Right;
-				}
-				break;
-			case 4:
-				if (map.Up != null && map.Up.Full) {
-					return Direction.Up;
-				}
-				break;
+			Direction[] directions = new Direction[4];
+			int peak = 0;
+
+			if (map.Down != null && map.Down.Full) {
+				directions [peak] = Direction.Down;
+				peak += 1;
 			}
-			return Direction.None;
+			if (map.Up != null && map.Up.Full) {
+				directions [peak] = Direction.Up;
+				peak += 1;
+			}
+			if (map.Left != null && map.Left.Full) {
+				directions [peak] = Direction.Left;
+				peak += 1;
+			}
+			if (map.Right != null && map.Right.Full) {
+				directions [peak] = Direction.Right;
+				peak += 1;
+			}
+
+			return directions [random.Next (0, peak)];
 		}
 	}
 }
