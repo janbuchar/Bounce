@@ -8,7 +8,7 @@ namespace Bounce
 
 		public Direction Move (NeighbourMap map, Board board)
 		{
-			if (direction == Direction.None && !checkPath (map)) {
+			if (direction == Direction.None) {
 				turnAnywhere (map);
 			} else {
 				if (rightHand (map) != null && !rightHand (map).Full) {
@@ -21,17 +21,6 @@ namespace Bounce
 			}
 
 			return direction;
-		}
-
-		protected bool checkPath (NeighbourMap map)
-		{
-			if ((map.Left == null || map.Left.Full) && 
-				(map.Right == null || map.Right.Full) && 
-				(map.Up == null || map.Up.Full) && 
-				(map.Down == null || map.Down.Full)) {
-				return false;
-			}
-			return true;
 		}
 
 		protected void turnAnywhere (NeighbourMap map)
