@@ -124,6 +124,8 @@ namespace Bounce
 		{
 			renderTimeoutID = GLib.Timeout.Add (40, delegate {
 				board.MoveBalls ();
+				board.MoveMonsters ();
+				board.MovePlayer ();
 				board.Render ();
 				return true;
 			});

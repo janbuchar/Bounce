@@ -251,7 +251,10 @@ namespace Bounce
 					}
 				}
 			}
+		}
 
+		public void MoveMonsters ()
+		{
 			foreach (Monster monster in monsters) {
 				Field field = crossedField (monster.X, monster.Y);
 				if (monster.Remaining == 0) {
@@ -268,7 +271,10 @@ namespace Bounce
 					}
 				}
 			}
+		}
 
+		public void MovePlayer ()
+		{
 			if (Player.Moving) {
 				int steps = checkedSpriteDistance (Player, 5);
 				Player.Move (steps);
