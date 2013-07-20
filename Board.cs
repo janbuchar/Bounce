@@ -309,6 +309,8 @@ namespace Bounce
 				}
 				Player.BaseField = playerField;
 			}
+			checkBallCollisions ();
+			checkMonsterCollisions ();
 		}
 
 		protected Field crossedField (int x, int y)
