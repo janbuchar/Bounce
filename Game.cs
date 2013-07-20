@@ -126,8 +126,12 @@ namespace Bounce
 				for (int i = 0; i < 5; i++) {
 					board.MoveBalls ();
 				}
-				board.MoveMonsters ();
-				board.MovePlayer ();
+				for (int i = 0; i < 5; i++) {
+					board.MoveMonsters ();
+				}
+				for (int i = 0; i < 5; i++) {
+					board.MovePlayer ();
+				}
 				board.Render ();
 				return true;
 			});
