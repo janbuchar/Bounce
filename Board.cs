@@ -21,7 +21,9 @@ namespace Bounce
 		protected List<Ball> balls = new List<Ball> ();
 		protected List<Monster> monsters = new List<Monster> ();
 		private Field[,] fields;
-		int fieldSize;
+
+		int FieldSize { get; protected set; }
+
 		const int hitLimit = 1000;
 		BoardRenderer renderer;
 
@@ -49,7 +51,7 @@ namespace Bounce
 			this.Width = width;
 			this.Height = height;
 			this.Clear ();
-			this.fieldSize = fieldSize;
+			this.FieldSize = fieldSize;
 			renderer.RefreshBackground (fields);
 		}
 
@@ -82,7 +84,7 @@ namespace Bounce
 
 		public void AddBall (int x, int y, int dX, int dY)
 		{
-			balls.Add (new Ball (x * fieldSize, y * fieldSize, dX, dY));
+			balls.Add (new Ball (x * FieldSize, y * FieldSize, dX, dY));
 		}
 
 		public void AddMonster (string type)
@@ -113,7 +115,7 @@ namespace Bounce
 				}
 			}
 			MonsterStrategy strategy = (MonsterStrategy)Activator.CreateInstance (Type.GetType ("Bounce." + type));
-			monsters.Add (new Monster (strategy, type, field.X * fieldSize, field.Y * fieldSize));
+			monsters.Add (new Monster (strategy, type, field.X * FieldSize, field.Y * FieldSize));
 		}
 
 		public void Fill (int x, int y)
@@ -222,16 +224,16 @@ namespace Bounce
 		public void MoveBalls ()
 		{
 			foreach (Ball ball in balls) {
-				int posX = (ball.X + fieldSize / 2) / fieldSize;
-				int posY = (ball.Y + ball.dY) / fieldSize;
+				int posX = (ball.X + FieldSize / 2) / FieldSize;
+				int posY = (ball.Y + ball.dY) / FieldSize;
 				if (fields [posX, posY + 1].Full && ball.dY > 0) {
 					ball.BounceY ();
 				}
 				if (fields [posX, posY].Full && ball.dY < 0) {
 					ball.BounceY ();
 				}
-				posX = (ball.X + ball.dX) / fieldSize;
-				posY = (ball.Y + fieldSize / 2) / fieldSize;
+				posX = (ball.X + ball.dX) / FieldSize;
+				posY = (ball.Y + FieldSize / 2) / FieldSize;
 				if (fields [posX + 1, posY].Full && ball.dX > 0) {
 					ball.BounceX ();
 				}
@@ -249,7 +251,7 @@ namespace Bounce
 			foreach (Ball ball in balls) {
 				if (Player.Trail.Contains (crossedField (ball.X, ball.Y))) {
 					Player.Trail.Clear ();
-					Player.Place (Player.BaseField.X * fieldSize, Player.BaseField.Y * fieldSize);
+					Player.Place (Player.BaseField.X * FieldSize, Player.BaseField.Y * FieldSize);
 					Player.HitTime = DateTime.Now;
 					if (PlayerCollision != null) {
 						PlayerCollision (this, EventArgs.Empty);
@@ -314,7 +316,7 @@ namespace Bounce
 
 		protected Field crossedField (int x, int y)
 		{
-			return fields [x / fieldSize, y / fieldSize];
+			return fields [x / FieldSize, y / FieldSize];
 		}
 
 		public int checkedSpriteDistance (Sprite sprite, int steps)
@@ -322,13 +324,13 @@ namespace Bounce
 			int max = 0;
 			switch (sprite.Direction) {
 			case Direction.Down:
-				max = Height * fieldSize - (sprite.Y + fieldSize);
+				max = Height * FieldSize - (sprite.Y + FieldSize);
 				break;
 			case Direction.Up:
 				max = sprite.Y;
 				break;
 			case Direction.Right:
-				max = Width * fieldSize - (sprite.X + fieldSize);
+				max = Width * FieldSize - (sprite.X + FieldSize);
 				break;
 			case Direction.Left:
 				max = sprite.X;
@@ -341,15 +343,15 @@ namespace Bounce
 		{
 			switch (sprite.Direction) {
 			case Direction.Up:
-				return sprite.Y % fieldSize;
+				return sprite.Y % FieldSize;
 			case Direction.Down:
-				return fieldSize - sprite.Y % fieldSize;
+				return FieldSize - sprite.Y % FieldSize;
 			case Direction.Right:
-				return fieldSize - sprite.X % fieldSize;
+				return FieldSize - sprite.X % FieldSize;
 			case Direction.Left:
-				return sprite.X % fieldSize;
+				return sprite.X % FieldSize;
 			default:
-				return fieldSize;
+				return FieldSize;
 			}
 		}
 
