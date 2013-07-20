@@ -222,32 +222,37 @@ namespace Bounce
 		public void MoveBalls ()
 		{
 			foreach (Ball ball in balls) {
-				for (int i = 0; i < 5; i++) {
-					int posX = (ball.X + fieldSize / 2) / fieldSize;
-					int posY = (ball.Y + ball.dY) / fieldSize;
-					if (fields [posX, posY + 1].Full && ball.dY > 0) {
-						ball.BounceY ();
-					}
-					if (fields [posX, posY].Full && ball.dY < 0) {
-						ball.BounceY ();
-					}
-					posX = (ball.X + ball.dX) / fieldSize;
-					posY = (ball.Y + fieldSize / 2) / fieldSize;
-					if (fields [posX + 1, posY].Full && ball.dX > 0) {
-						ball.BounceX ();
-					}
-					if (fields [posX, posY].Full && ball.dX < 0) {
-						ball.BounceX ();
-					}
-					ball.X += ball.dX;
-					ball.Y += ball.dY;	
-					if (Player.Trail.Contains (crossedField (ball.X, ball.Y))) {
-						Player.Trail.Clear ();
-						Player.Place (Player.BaseField.X * fieldSize, Player.BaseField.Y * fieldSize);
-						Player.HitTime = DateTime.Now;
-						if (PlayerCollision != null) {
-							PlayerCollision (this, EventArgs.Empty);
-						}
+				int posX = (ball.X + fieldSize / 2) / fieldSize;
+				int posY = (ball.Y + ball.dY) / fieldSize;
+				if (fields [posX, posY + 1].Full && ball.dY > 0) {
+					ball.BounceY ();
+				}
+				if (fields [posX, posY].Full && ball.dY < 0) {
+					ball.BounceY ();
+				}
+				posX = (ball.X + ball.dX) / fieldSize;
+				posY = (ball.Y + fieldSize / 2) / fieldSize;
+				if (fields [posX + 1, posY].Full && ball.dX > 0) {
+					ball.BounceX ();
+				}
+				if (fields [posX, posY].Full && ball.dX < 0) {
+					ball.BounceX ();
+				}
+				ball.X += ball.dX;
+				ball.Y += ball.dY;
+			}
+			checkBallCollisions ();
+		}
+
+		protected void checkBallCollisions ()
+		{
+			foreach (Ball ball in balls) {
+				if (Player.Trail.Contains (crossedField (ball.X, ball.Y))) {
+					Player.Trail.Clear ();
+					Player.Place (Player.BaseField.X * fieldSize, Player.BaseField.Y * fieldSize);
+					Player.HitTime = DateTime.Now;
+					if (PlayerCollision != null) {
+						PlayerCollision (this, EventArgs.Empty);
 					}
 				}
 			}
@@ -264,7 +269,14 @@ namespace Bounce
 				} else {
 					monster.Move (Math.Min (5, monster.Remaining));
 				}
-				if (field == crossedField (Player.X, Player.Y) && (DateTime.Now - Player.HitTime).TotalMilliseconds > hitLimit) {
+			}
+			checkMonsterCollisions ();
+		}
+
+		protected void checkMonsterCollisions ()
+		{
+			foreach (Monster monster in monsters) {
+				if (crossedField (monster.X, monster.Y) == crossedField (Player.X, Player.Y) && (DateTime.Now - Player.HitTime).TotalMilliseconds > hitLimit) {
 					Player.HitTime = DateTime.Now;
 					if (PlayerCollision != null) {
 						PlayerCollision (this, EventArgs.Empty);
