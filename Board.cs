@@ -264,10 +264,10 @@ namespace Bounce
 				Field field = crossedField (monster.X, monster.Y);
 				if (monster.Remaining == 0) {
 					monster.StartMove (new NeighbourMap (field, GetNeighbours (field)), this);
-					monster.Move (checkedSpriteDistance (monster, 1));
+					monster.Move (1);
 					monster.Stop (checkedSpriteDistance (monster, calculateResidualSteps (monster)));
 				} else {
-					monster.Move (Math.Min (1, monster.Remaining));
+					monster.Move (1);
 				}
 			}
 			checkMonsterCollisions ();
@@ -288,14 +288,13 @@ namespace Bounce
 		public void MovePlayer ()
 		{
 			if (Player.Moving) {
-				int steps = checkedSpriteDistance (Player, 1);
-				Player.Move (steps);
-				if (steps == 0) {
+				if (checkedSpriteDistance (Player, 1) == 0) {
 					Player.Stop (0);
+				} else {
+					Player.Move (1);
 				}
-			}
-			if (Player.Remaining > 0) {
-				Player.Move (Math.Min (1, Player.Remaining));
+			} else if (Player.Remaining > 0) {
+				Player.Move (1);
 				if (Player.Remaining == 0 && Player.SteeringDirection != Direction.None) {
 					Player.Steer ();
 				}
