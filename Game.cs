@@ -122,14 +122,16 @@ namespace Bounce
 
 		protected void startRenderTimeout ()
 		{
-			renderTimeoutID = GLib.Timeout.Add (30, delegate {
-				for (int i = 0; i < 5; i++) {
+			uint fps = 33;
+			double speed = 6;
+			renderTimeoutID = GLib.Timeout.Add (1000 / fps, delegate {
+				for (int i = 0; i < (int)Math.Ceiling(speed * board.FieldSize / fps); i++) {
 					board.MoveBalls ();
 				}
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < (int)Math.Ceiling(speed * board.FieldSize / fps); i++) {
 					board.MoveMonsters ();
 				}
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < (int)Math.Ceiling(speed * board.FieldSize / fps); i++) {
 					board.MovePlayer ();
 				}
 				board.Render ();

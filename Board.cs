@@ -22,7 +22,7 @@ namespace Bounce
 		protected List<Monster> monsters = new List<Monster> ();
 		private Field[,] fields;
 
-		int FieldSize { get; protected set; }
+		public int FieldSize { get; protected set; }
 
 		const int hitLimit = 1000;
 		BoardRenderer renderer;
