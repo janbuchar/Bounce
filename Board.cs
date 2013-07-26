@@ -131,10 +131,11 @@ namespace Bounce
 			foreach (Ball ball in balls) {
 				ballMap.Add (crossedField (ball.X, ball.Y));
 			}
-			while (Player.Trail.Count > 0) {
-				Player.Trail.Dequeue ().Full = true;
+			foreach (Field field in Player.Trail) {
+				field.Full = true;
 				filled += 1;
 			}
+			Player.Trail = new List<Field> ();
 			bool[,] visited = new bool[Width, Height]; 
 
 			List<Field> reserve = new List<Field> ();
@@ -303,7 +304,7 @@ namespace Bounce
 			}
 			Field playerField = crossedField (Player.X, Player.Y);
 			if (!playerField.Full && !Player.Trail.Contains (playerField)) {
-				Player.Trail.Enqueue (playerField);
+				Player.Trail.Add (playerField);
 			} else if (playerField.Full) {
 				if (Player.Trail.Count > 0) {
 					closeTrail ();

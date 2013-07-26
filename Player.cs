@@ -6,7 +6,7 @@ namespace Bounce
 	public class Player : Sprite
 	{
 		public Direction SteeringDirection;
-		public Queue<Field> Trail = new Queue<Field> ();
+		public List<Field> Trail = new List<Field> ();
 		public Field BaseField;
 		public DateTime HitTime = DateTime.Now;
 
