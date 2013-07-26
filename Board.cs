@@ -118,12 +118,6 @@ namespace Bounce
 			monsters.Add (new Monster (strategy, type, field.X * FieldSize, field.Y * FieldSize));
 		}
 
-		public void Fill (int x, int y)
-		{
-			fields [x, y].Full = true;
-			renderer.RefreshBackground (fields);
-		}
-
 		protected void closeTrail ()
 		{
 			int filled = 0;
