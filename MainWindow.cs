@@ -31,7 +31,7 @@ public partial class MainWindow: Gtk.Window
 			 DialogFlags.Modal,
 			 MessageType.Info,
 			 ButtonsType.None,
-			 "Jedeš vole!"
+			 "Úroveň dokončena! Abyste zvládli víc nepřátel, dostanete další život."
 			);
 			dialog.AddButton ("Další kolo", ResponseType.Accept);
 			dialog.AddButton ("Konec hry", ResponseType.Cancel);
@@ -48,10 +48,10 @@ public partial class MainWindow: Gtk.Window
 		game.GameLost += delegate(object sender, EventArgs e) {
 			MessageDialog dialog = new MessageDialog (
 				this,
-				DialogFlags.Modal,
-				MessageType.Info,
-				ButtonsType.None,
-				"Tak tos posral..."
+			 DialogFlags.Modal,
+			 MessageType.Info,
+			 ButtonsType.None,
+			 "Konec hry"
 			);
 			dialog.AddButton ("Nová hra", ResponseType.Accept);
 			dialog.AddButton ("Konec", ResponseType.Close);
@@ -77,13 +77,13 @@ public partial class MainWindow: Gtk.Window
 		};
 		game.Start (config);
 		level = 1;
-		updateLevelCounter();
+		updateLevelCounter ();
 	}
 
 	protected void PauseGame ()
 	{
 		game.Pause ();
-		board.OverlayText = "Hra je pozastavena. Stiskněte libovolnou klávesu a pojede to.";
+		board.OverlayText = "Hra je pozastavena. Stiskněte libovolnou klávesu.";
 	}
 
 	protected void NextLevel (Config config)
@@ -129,13 +129,13 @@ public partial class MainWindow: Gtk.Window
 		if (!game.Running) {
 			game.Resume ();
 		} else {
-			board.MovePlayer (keyToDirection(args.Event.Key));
+			board.MovePlayer (keyToDirection (args.Event.Key));
 		}
 	}
 
 	protected void OnKeyReleaseEvent (object o, KeyReleaseEventArgs args)
 	{
-		board.StopPlayer (keyToDirection(args.Event.Key));
+		board.StopPlayer (keyToDirection (args.Event.Key));
 	}
 
 	protected Direction keyToDirection (Gdk.Key key)
