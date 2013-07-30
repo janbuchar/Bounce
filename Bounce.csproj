@@ -79,6 +79,7 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="Monsters\Circulator.cs" />
     <Compile Include="Monsters\Sniffer.cs" />
+    <Compile Include="RandomAccessor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

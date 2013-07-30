@@ -5,7 +5,7 @@ namespace Bounce
 {
 	public class Wanderer : MonsterStrategy
 	{
-		Random random = new Random ();
+		Random random = RandomAccessor.Instance;
 
 		public Direction Move (NeighbourMap map, Board board)
 		{

@@ -8,7 +8,7 @@ namespace Bounce
 		const double moveRateStep = 0.95;
 		double moveRate = 0;
 		int wait = 0;
-		Random random = new Random ();
+		Random random = RandomAccessor.Instance;
 		Stack<Field> path;
 
 		public Direction Move (NeighbourMap map, Board board)
