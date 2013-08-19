@@ -124,6 +124,7 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	[GLib.ConnectBefore]
 	protected void OnKeyPressEvent (object o, KeyPressEventArgs args)
 	{
 		if (!game.Running) {
@@ -143,15 +144,19 @@ public partial class MainWindow: Gtk.Window
 		switch (key) {
 		case Gdk.Key.w:
 		case Gdk.Key.k:
+		case Gdk.Key.Up:
 			return Bounce.Direction.Up;
 		case Gdk.Key.s:
 		case Gdk.Key.j:
+		case Gdk.Key.Down:
 			return Bounce.Direction.Down;
 		case Gdk.Key.a:
 		case Gdk.Key.h:
+		case Gdk.Key.Left:
 			return Bounce.Direction.Left;
 		case Gdk.Key.d:
 		case Gdk.Key.l:
+		case Gdk.Key.Right:
 			return Bounce.Direction.Right;
 		default:
 			return Bounce.Direction.None;
