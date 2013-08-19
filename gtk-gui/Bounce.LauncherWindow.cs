@@ -33,6 +33,7 @@ namespace Bounce
 			this.vbox2.Spacing = 6;
 			// Container child vbox2.Gtk.Box+BoxChild
 			this.table1 = new global::Gtk.Table (((uint)(6)), ((uint)(2)), false);
+			this.table1.Name = "table1";
 			this.table1.RowSpacing = ((uint)(6));
 			this.table1.ColumnSpacing = ((uint)(6));
 			// Container child table1.Gtk.Table+TableChild
@@ -216,6 +217,12 @@ namespace Bounce
 			this.DefaultHeight = 300;
 			this.Show ();
 			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
+			this.width.Activated += new global::System.EventHandler (this.OnPlayButtonClicked);
+			this.timePerBall.Activated += new global::System.EventHandler (this.OnPlayButtonClicked);
+			this.monsterCount.Activated += new global::System.EventHandler (this.OnPlayButtonClicked);
+			this.lives.Activated += new global::System.EventHandler (this.OnPlayButtonClicked);
+			this.height.Activated += new global::System.EventHandler (this.OnPlayButtonClicked);
+			this.ballCount.Activated += new global::System.EventHandler (this.OnPlayButtonClicked);
 			this.playButton.Clicked += new global::System.EventHandler (this.OnPlayButtonClicked);
 		}
 	}

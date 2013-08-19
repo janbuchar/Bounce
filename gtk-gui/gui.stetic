@@ -126,6 +126,7 @@
                 <property name="ClimbRate">1</property>
                 <property name="Numeric">True</property>
                 <property name="Value">2</property>
+                <signal name="Activated" handler="OnPlayButtonClicked" />
               </widget>
               <packing>
                 <property name="TopAttach">2</property>
@@ -173,6 +174,7 @@
                 <property name="ClimbRate">1</property>
                 <property name="Numeric">True</property>
                 <property name="Value">20</property>
+                <signal name="Activated" handler="OnPlayButtonClicked" />
               </widget>
               <packing>
                 <property name="TopAttach">1</property>
@@ -220,6 +222,7 @@
                 <property name="ClimbRate">1</property>
                 <property name="Numeric">True</property>
                 <property name="Value">5</property>
+                <signal name="Activated" handler="OnPlayButtonClicked" />
               </widget>
               <packing>
                 <property name="TopAttach">4</property>
@@ -267,6 +270,7 @@
                 <property name="ClimbRate">1</property>
                 <property name="Numeric">True</property>
                 <property name="Value">1</property>
+                <signal name="Activated" handler="OnPlayButtonClicked" />
               </widget>
               <packing>
                 <property name="TopAttach">3</property>
@@ -314,6 +318,7 @@
                 <property name="ClimbRate">1</property>
                 <property name="Numeric">True</property>
                 <property name="Value">30</property>
+                <signal name="Activated" handler="OnPlayButtonClicked" />
               </widget>
               <packing>
                 <property name="TopAttach">5</property>
@@ -361,6 +366,7 @@
                 <property name="ClimbRate">1</property>
                 <property name="Numeric">True</property>
                 <property name="Value">30</property>
+                <signal name="Activated" handler="OnPlayButtonClicked" />
               </widget>
               <packing>
                 <property name="LeftAttach">1</property>
