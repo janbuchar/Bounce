@@ -142,12 +142,16 @@ public partial class MainWindow: Gtk.Window
 	{
 		switch (key) {
 		case Gdk.Key.w:
+		case Gdk.Key.k:
 			return Bounce.Direction.Up;
 		case Gdk.Key.s:
+		case Gdk.Key.j:
 			return Bounce.Direction.Down;
 		case Gdk.Key.a:
+		case Gdk.Key.h:
 			return Bounce.Direction.Left;
 		case Gdk.Key.d:
+		case Gdk.Key.l:
 			return Bounce.Direction.Right;
 		default:
 			return Bounce.Direction.None;
