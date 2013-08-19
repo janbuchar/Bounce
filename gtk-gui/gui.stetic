@@ -18,6 +18,7 @@
     <property name="MemberName" />
     <property name="Title" translatable="yes">Bounce</property>
     <property name="WindowPosition">CenterOnParent</property>
+    <property name="Resizable">False</property>
     <signal name="KeyPressEvent" handler="OnKeyPressEvent" />
     <signal name="KeyReleaseEvent" handler="OnKeyReleaseEvent" />
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
