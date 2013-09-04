@@ -130,13 +130,13 @@ public partial class MainWindow: Gtk.Window
 		if (!game.Running) {
 			game.Resume ();
 		} else {
-			board.MovePlayer (keyToDirection (args.Event.Key));
+			board.SteerPlayer (keyToDirection (args.Event.Key));
 		}
 	}
 
 	protected void OnKeyReleaseEvent (object o, KeyReleaseEventArgs args)
 	{
-		board.StopPlayer (keyToDirection (args.Event.Key));
+		board.UnsteerPlayer (keyToDirection (args.Event.Key));
 	}
 
 	protected Direction keyToDirection (Gdk.Key key)

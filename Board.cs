@@ -350,7 +350,7 @@ namespace Bounce
 			}
 		}
 
-		public void MovePlayer (Direction direction)
+		public void SteerPlayer (Direction direction)
 		{
 			if (!Player.SteeringStack.Contains (direction)) {
 				Player.SteeringStack.AddLast (direction);
@@ -364,7 +364,7 @@ namespace Bounce
 			}
 		}
 
-		public void StopPlayer (Direction direction)
+		public void UnsteerPlayer (Direction direction)
 		{
 			if (Player.SteeringStack.Contains (direction)) {
 				Player.SteeringStack.Remove (direction);
