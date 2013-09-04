@@ -292,8 +292,8 @@ namespace Bounce
 				}
 			} else if (Player.Remaining > 0) {
 				Player.Move (1);
-				if (Player.Remaining == 0 && Player.SteeringDirection != Direction.None) {
-					Player.Steer ();
+				if (Player.Remaining == 0 && Player.SteeringStack.Count > 0) {
+					Player.StartMove (Player.SteeringStack.Last.Value);
 				}
 			}
 			Field playerField = crossedField (Player.X, Player.Y);
@@ -352,24 +352,31 @@ namespace Bounce
 
 		public void MovePlayer (Direction direction)
 		{
-			if (!Player.Moving && Player.Remaining == 0) {
-				Player.StartMove (direction);
-			} else {
-				if (Player.Moving) {
-					StopPlayer (Player.Direction);
+			if (!Player.SteeringStack.Contains (direction)) {
+				Player.SteeringStack.AddLast (direction);
+				if (!Player.Moving && Player.Remaining == 0) {
+					Player.StartMove (direction);
+				} else {
+					if (Player.Moving) {
+						Player.Stop (checkedSpriteDistance (Player, calculateResidualSteps (Player)));
+					}
 				}
-				Player.SteeringDirection = direction;
 			}
 		}
 
 		public void StopPlayer (Direction direction)
 		{
-			if (direction != Direction.None) {
-				if (direction == Player.Direction) {
+			if (Player.SteeringStack.Contains (direction)) {
+				Player.SteeringStack.Remove (direction);
+				if (Player.SteeringStack.Count > 0) {
+					if (Player.Direction == direction) {
+						Player.Stop (checkedSpriteDistance (Player, calculateResidualSteps (Player)));
+					}
+					if (Player.Remaining == 0) {
+						Player.StartMove (Player.SteeringStack.Last.Value);
+					}
+				} else {
 					Player.Stop (checkedSpriteDistance (Player, calculateResidualSteps (Player)));
-				}
-				if (direction == Player.SteeringDirection) {
-					Player.SteeringDirection = Direction.None;
 				}
 			}
 		}
