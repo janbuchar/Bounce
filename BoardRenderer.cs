@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace Bounce
 {
+	private const int DEFINITELY_NOT_YOUR_MOTHER_SHOES_SIZE = 69;
+	
 	public class BoardRenderer
 	{
 		Gtk.DrawingArea area;
